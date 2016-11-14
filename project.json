@@ -4,7 +4,11 @@
     "debugType": "portable",
     "emitEntryPoint": true
   },
-  "dependencies": {},
+  "testRunner": "mstest",
+  "dependencies": {
+    "dotnet-test-mstest": "1.1.2-preview",
+    "MSTest.TestFramework": "1.0.6-preview"
+  },
   "frameworks": {
     "netcoreapp1.1": {
       "dependencies": {
