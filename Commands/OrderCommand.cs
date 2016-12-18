@@ -1,5 +1,7 @@
 using System;
 using System.Threading.Tasks;
+using Deadlock.Robinhood;
+using Deadlock.Robinhood.Model;
 
 namespace RobinhoodCli.Commands
 {
@@ -10,13 +12,34 @@ namespace RobinhoodCli.Commands
         public int? Size { get; set; }
         public decimal? LimitPrice { get; set; }
 
-        public Task<ExecutionResult> Execute(string authenticationToken)
+        public async Task<ExecutionResult> Execute(string authenticationToken)
         {
             Console.ForegroundColor = ConsoleColor.Green;
             Console.WriteLine($"Sending order: {Type} {Symbol} - {Size} shares - ${LimitPrice} limit");
             Console.ForegroundColor = ConsoleColor.Black;
 
-            return Task.FromResult(ExecutionResult.NoResult);
+            using (RobinhoodClient client = new RobinhoodClient(authenticationToken))
+            {
+                var newOrder = CreateNewOrder();
+                var newOrderResult = await client.Orders(newOrder);
+
+                if (!newOrderResult.IsSuccessStatusCode)
+                {
+                    return new ExecutionResult()
+                    {
+                        LastError = newOrderResult.Content
+                    };
+                }
+            }
+
+            return ExecutionResult.NoResult;
+        }
+
+        internal NewOrder CreateNewOrder()
+        {
+            return new NewOrder()
+            {
+            };
         }
     }
 }
