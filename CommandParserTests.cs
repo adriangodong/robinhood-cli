@@ -1,4 +1,5 @@
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+using RobinhoodCli.Commands;
 
 namespace RobinhoodCli
 {
@@ -141,8 +142,8 @@ namespace RobinhoodCli
         public void Parse_ShouldReturnBuyOrder_WithBuyTypeParameter()
         {
             // Act
-            var buyOrder = commandParser.Parse("buy hood 1");
-            var bOrder = commandParser.Parse("b hood 1");
+            var buyOrder = commandParser.Parse("buy hood 1") as OrderCommand;
+            var bOrder = commandParser.Parse("b hood 1") as OrderCommand;
 
             // Assert
             Assert.IsNotNull(buyOrder);
@@ -160,8 +161,8 @@ namespace RobinhoodCli
         public void Parse_ShouldReturnSellOrder_WithSellTypeParameter()
         {
             // Act
-            var sellOrder = commandParser.Parse("sell hood");
-            var sOrder = commandParser.Parse("s hood");
+            var sellOrder = commandParser.Parse("sell hood") as OrderCommand;
+            var sOrder = commandParser.Parse("s hood") as OrderCommand;
 
             // Assert
             Assert.IsNotNull(sellOrder);

@@ -13,7 +13,7 @@ namespace RobinhoodCli
         public const string Error_BadSizeParameter = "Cannot parse size parameter '{0}'";
         public const string Error_BadLimitPriceParameter = "Cannot parse limit price parameter '{0}'";
 
-        public OrderCommand Parse(string command)
+        public ICommand Parse(string command)
         {
             if (string.IsNullOrWhiteSpace(command))
             {
@@ -24,6 +24,9 @@ namespace RobinhoodCli
             var tokens = command.Split(new[] { ' ' }, StringSplitOptions.RemoveEmptyEntries);
             switch (tokens[0])
             {
+                case "help":
+                    return new HelpCommand();
+
                 case "buy":
                 case "b":
                     return ParseCommandTokens(OrderType.Buy, tokens);

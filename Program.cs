@@ -13,9 +13,9 @@ namespace RobinhoodCli
             {
                 Console.Write("> ");
                 var command = Console.ReadLine();
-                var order = commandParser.Parse(command);
+                var parsedCommand = commandParser.Parse(command);
 
-                if (order == null)
+                if (parsedCommand == null)
                 {
                     Console.ForegroundColor = ConsoleColor.DarkRed;
                     Console.WriteLine($"ERROR: {commandParser.LastError}");
@@ -23,9 +23,7 @@ namespace RobinhoodCli
                 }
                 else
                 {
-                    Console.ForegroundColor = ConsoleColor.Green;
-                    Console.WriteLine($"Sending order: {order.Type} {order.Symbol} - {order.Size} shares - ${order.LimitPrice} limit");
-                    Console.ForegroundColor = ConsoleColor.Black;
+                    parsedCommand.Execute();
                 }
             }
         }
