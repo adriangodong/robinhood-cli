@@ -2,6 +2,20 @@
 
 ## Usage
 
+### Ask for help
+
+    help
+
+### Login
+
+    login username password
+    - username
+    - password
+
+### Positions
+
+    pos
+
 ### Place an order
 
     buy|b|sell|s symbol [size] [limit price]
