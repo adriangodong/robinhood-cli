@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Moq;
 using RobinhoodCli.Commands;
 
 namespace RobinhoodCli
@@ -8,12 +9,14 @@ namespace RobinhoodCli
     public class CommandParserTests
     {
 
+        private Mock<ICommandParser> mockCommandParser;
         private CommandParser commandParser;
 
         [TestInitialize]
         public void Init()
         {
-            commandParser = new CommandParser(new List<ICommandParser>());
+            mockCommandParser = new Mock<ICommandParser>();
+            commandParser = new CommandParser(new List<ICommandParser>() { mockCommandParser.Object });
         }
 
         [TestMethod]
@@ -52,7 +55,21 @@ namespace RobinhoodCli
         [TestMethod]
         public void Parse_ShouldCallCommandParser_WithTokenizedCommand()
         {
-            // TODO
+            // Arrange
+            string[] actualCommandTokens = null;
+            mockCommandParser
+                .Setup(mock => mock.Parse(It.IsAny<string[]>()))
+                .Callback<string[]>(commandTokens => actualCommandTokens = commandTokens);
+
+            // Act
+            commandParser.Parse("1 2 3");
+
+            // Assert
+            Assert.IsNotNull(actualCommandTokens);
+            Assert.AreEqual(3, actualCommandTokens.Length);
+            Assert.AreEqual("1", actualCommandTokens[0]);
+            Assert.AreEqual("2", actualCommandTokens[1]);
+            Assert.AreEqual("3", actualCommandTokens[2]);
         }
 
     }
