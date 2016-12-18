@@ -1,13 +1,15 @@
 using System;
+using System.Threading.Tasks;
 
 namespace RobinhoodCli.Commands
 {
     public class HelpCommand : ICommand, ICommandParser
     {
 
-        public void Execute()
+        public Task<ExecutionResult> Execute(string authenticationToken)
         {
             Console.WriteLine("Help");
+            return Task.FromResult(ExecutionResult.NoResult);
         }
 
         public ICommand Parse(string[] commandTokens)

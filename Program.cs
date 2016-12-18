@@ -6,12 +6,15 @@ namespace RobinhoodCli
 {
     public class Program
     {
+
         private static CommandParser commandParser = new CommandParser(new List<ICommandParser>() {
             new HelpCommand(),
             new AuthCommand(),
             new PositionsCommand(),
             new OrderCommandParser()
         });
+
+        private static string AuthenticationToken;
 
         public static void Main(string[] args)
         {
@@ -30,7 +33,22 @@ namespace RobinhoodCli
                 }
                 else
                 {
-                    parsedCommand.Execute();
+                    var task = parsedCommand.Execute(AuthenticationToken);
+                    task.Wait();
+
+                    if (task.Result.LastError == null)
+                    {
+                        if (task.Result is AuthenticationExecutionResult)
+                        {
+                            AuthenticationToken = (task.Result as AuthenticationExecutionResult).AuthenticationToken;
+                        }
+                    }
+                    else
+                    {
+                        Console.ForegroundColor = ConsoleColor.DarkRed;
+                        Console.WriteLine($"ERROR: {task.Result.LastError}");
+                        Console.ResetColor();
+                    }
                 }
             }
         }

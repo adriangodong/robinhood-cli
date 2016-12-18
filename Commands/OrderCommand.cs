@@ -1,4 +1,5 @@
 using System;
+using System.Threading.Tasks;
 
 namespace RobinhoodCli.Commands
 {
@@ -9,11 +10,13 @@ namespace RobinhoodCli.Commands
         public int? Size { get; set; }
         public decimal? LimitPrice { get; set; }
 
-        public void Execute()
+        public Task<ExecutionResult> Execute(string authenticationToken)
         {
             Console.ForegroundColor = ConsoleColor.Green;
             Console.WriteLine($"Sending order: {Type} {Symbol} - {Size} shares - ${LimitPrice} limit");
             Console.ForegroundColor = ConsoleColor.Black;
+
+            return Task.FromResult(ExecutionResult.NoResult);
         }
     }
 }
