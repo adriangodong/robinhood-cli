@@ -1,5 +1,11 @@
 # Robinhood CLI
 
+## Project Status
+
+[![Build status](https://ci.appveyor.com/api/projects/status/hed8j6vdhog1d9al/branch/master?svg=true)](https://ci.appveyor.com/project/adriangodong/robinhood-cli-9hirg/branch/master)
+
+Currently only CLI command parsing is functional. No data is sent to Robinhood API yet.
+
 ## Usage
 
 ### Ask for help
