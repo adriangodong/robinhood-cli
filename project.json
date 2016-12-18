@@ -8,7 +8,11 @@
   "dependencies": {
     "dotnet-test-mstest": "1.1.2-preview",
     "MSTest.TestFramework": "1.0.6-preview",
-    "Moq": "4.6.38-alpha"
+    "Moq": "4.6.38-alpha",
+    "Deadlock.Robinhood": {
+      "target": "project",
+      "type": "build"
+    }
   },
   "frameworks": {
     "netcoreapp1.1": {
