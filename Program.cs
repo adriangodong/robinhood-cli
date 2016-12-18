@@ -9,7 +9,7 @@ namespace RobinhoodCli
 
         private static CommandParser commandParser = new CommandParser(new List<ICommandParser>() {
             new HelpCommand(),
-            new AuthCommand(),
+            new AuthCommandParser(),
             new PositionsCommand(),
             new OrderCommandParser()
         });
