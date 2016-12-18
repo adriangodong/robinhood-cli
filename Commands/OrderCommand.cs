@@ -1,8 +1,8 @@
 using System;
 
-namespace RobinhoodCli
+namespace RobinhoodCli.Commands
 {
-    public class Order : ICommand
+    public class OrderCommand : ICommand
     {
         public OrderType Type { get; set; }
         public string Symbol { get; set; }

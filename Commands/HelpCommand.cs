@@ -1,6 +1,6 @@
 using System;
 
-namespace RobinhoodCli
+namespace RobinhoodCli.Commands
 {
     public class HelpCommand : ICommand
     {

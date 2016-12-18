@@ -1,4 +1,4 @@
-namespace RobinhoodCli
+namespace RobinhoodCli.Commands
 {
     public interface ICommand
     {

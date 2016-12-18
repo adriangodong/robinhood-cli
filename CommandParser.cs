@@ -1,4 +1,5 @@
 using System;
+using RobinhoodCli.Commands;
 
 namespace RobinhoodCli
 {
@@ -12,7 +13,7 @@ namespace RobinhoodCli
         public const string Error_BadSizeParameter = "Cannot parse size parameter '{0}'";
         public const string Error_BadLimitPriceParameter = "Cannot parse limit price parameter '{0}'";
 
-        public Order Parse(string command)
+        public OrderCommand Parse(string command)
         {
             if (string.IsNullOrWhiteSpace(command))
             {
@@ -37,7 +38,7 @@ namespace RobinhoodCli
             }
         }
 
-        internal Order ParseCommandTokens(OrderType type, string[] commandTokens)
+        internal OrderCommand ParseCommandTokens(OrderType type, string[] commandTokens)
         {
             if (commandTokens.Length == 1)
             {
@@ -45,7 +46,7 @@ namespace RobinhoodCli
                 return null;
             }
 
-            var order = new Order
+            var order = new OrderCommand
             {
                 Type = type,
                 Symbol = commandTokens[1]
