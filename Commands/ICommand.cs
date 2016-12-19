@@ -4,6 +4,6 @@ namespace RobinhoodCli.Commands
 {
     public interface ICommand
     {
-        Task<ExecutionResult> Execute(string authenticationToken);
+        Task<ExecutionResult> Execute(ExecutionContext context);
     }
 }

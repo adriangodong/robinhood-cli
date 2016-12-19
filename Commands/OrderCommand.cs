@@ -12,13 +12,13 @@ namespace RobinhoodCli.Commands
         public int? Size { get; set; }
         public decimal? LimitPrice { get; set; }
 
-        public async Task<ExecutionResult> Execute(string authenticationToken)
+        public async Task<ExecutionResult> Execute(ExecutionContext context)
         {
             Console.ForegroundColor = ConsoleColor.Green;
             Console.WriteLine($"Sending order: {Type} {Symbol} - {Size} shares - ${LimitPrice} limit");
             Console.ForegroundColor = ConsoleColor.Black;
 
-            using (RobinhoodClient client = new RobinhoodClient(authenticationToken))
+            using (RobinhoodClient client = new RobinhoodClient(context.AuthenticationToken))
             {
                 var newOrder = CreateNewOrder();
                 var newOrderResult = await client.Orders(newOrder);
@@ -39,6 +39,11 @@ namespace RobinhoodCli.Commands
         {
             return new NewOrder()
             {
+                Side = Type == OrderType.Buy ? Side.Buy : Side.Sell,
+                Symbol = Symbol,
+                TimeInForce = "gfd",
+                Trigger = "immediate",
+                Type = LimitPrice.HasValue ? "limit" : "market"
             };
         }
     }

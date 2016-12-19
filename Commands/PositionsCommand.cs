@@ -1,4 +1,3 @@
-using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using Deadlock.Robinhood;
@@ -8,15 +7,13 @@ namespace RobinhoodCli.Commands
     public class PositionsCommand : ICommand, ICommandParser
     {
 
-        public async Task<ExecutionResult> Execute(string authenticationToken)
+        public async Task<ExecutionResult> Execute(ExecutionContext context)
         {
-            using (RobinhoodClient client = new RobinhoodClient(authenticationToken))
+            using (RobinhoodClient client = new RobinhoodClient(context.AuthenticationToken))
             {
                 var positionResult = await client.Positions();
                 if (positionResult.IsSuccessStatusCode)
                 {
-                    Console.WriteLine("Open positions:");
-
                     var openPositions = new List<OpenPosition>();
                     foreach (var position in positionResult.Data.Results)
                     {
@@ -41,11 +38,6 @@ namespace RobinhoodCli.Commands
                                 };
                             }
                         }
-                    }
-
-                    foreach (var openPosition in openPositions)
-                    {
-                        Console.WriteLine($"{openPosition.Symbol}: {openPosition.Quantity}");
                     }
 
                     return new PositionsExecutionResult()

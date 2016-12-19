@@ -14,7 +14,7 @@ namespace RobinhoodCli.Commands
             {
                 if (commandTokens.Length == 3)
                 {
-                    return new AuthCommand()
+                    return new LoginCommand()
                     {
                         Username = commandTokens[1],
                         Password = commandTokens[2]

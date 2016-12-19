@@ -14,11 +14,13 @@ namespace RobinhoodCli
             new OrderCommandParser()
         });
 
-        private static string AuthenticationToken;
+        private static ExecutionContext ExecutionContext;
 
         public static void Main(string[] args)
         {
+            ExecutionContext = new ExecutionContext();
             Console.WriteLine("Robinhood CLI. Press Ctrl+C to exit.");
+
             while (true)
             {
                 Console.Write("> ");
@@ -33,22 +35,10 @@ namespace RobinhoodCli
                 }
                 else
                 {
-                    var task = parsedCommand.Execute(AuthenticationToken);
+                    var task = parsedCommand.Execute(ExecutionContext);
                     task.Wait();
-
-                    if (task.Result.LastError == null)
-                    {
-                        if (task.Result is AuthenticationExecutionResult)
-                        {
-                            AuthenticationToken = (task.Result as AuthenticationExecutionResult).AuthenticationToken;
-                        }
-                    }
-                    else
-                    {
-                        Console.ForegroundColor = ConsoleColor.DarkRed;
-                        Console.WriteLine($"ERROR: {task.Result.LastError}");
-                        Console.ResetColor();
-                    }
+                    task.Result.UpdateExecutionContext(ExecutionContext);
+                    task.Result.RenderResult();
                 }
             }
         }

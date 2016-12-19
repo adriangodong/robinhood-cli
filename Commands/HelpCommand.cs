@@ -6,7 +6,7 @@ namespace RobinhoodCli.Commands
     public class HelpCommand : ICommand, ICommandParser
     {
 
-        public Task<ExecutionResult> Execute(string authenticationToken)
+        public Task<ExecutionResult> Execute(ExecutionContext context)
         {
             Console.WriteLine("Help");
             return Task.FromResult(ExecutionResult.NoResult);
