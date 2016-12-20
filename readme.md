@@ -49,4 +49,8 @@ Example 5: Exit all MSFT position
     s msft
 
 Both commands above will create the same order.
-They will create a market sell order for MSFT, order size is equal to open shares count. 
+They will create a market sell order for MSFT, order size is equal to open shares count.
+
+## Developer Notes
+
+[Unofficial API Documentation https://github.com/sanko/Robinhood]

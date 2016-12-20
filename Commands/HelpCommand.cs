@@ -1,12 +1,15 @@
 using System;
 using System.Threading.Tasks;
+using RobinhoodCli.Client;
 
 namespace RobinhoodCli.Commands
 {
     public class HelpCommand : ICommand, ICommandParser
     {
 
-        public Task<ExecutionResult> Execute(ExecutionContext context)
+        public Task<ExecutionResult> Execute(
+            IClient client,
+            ExecutionContext context)
         {
             Console.WriteLine("Help");
             return Task.FromResult(ExecutionResult.NoResult);

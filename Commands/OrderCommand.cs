@@ -1,7 +1,7 @@
 using System;
 using System.Threading.Tasks;
-using Deadlock.Robinhood;
 using Deadlock.Robinhood.Model;
+using RobinhoodCli.Client;
 
 namespace RobinhoodCli.Commands
 {
@@ -12,7 +12,9 @@ namespace RobinhoodCli.Commands
         public int? Size { get; set; }
         public decimal? LimitPrice { get; set; }
 
-        public async Task<ExecutionResult> Execute(ExecutionContext context)
+        public async Task<ExecutionResult> Execute(
+            IClient client,
+            ExecutionContext context)
         {
             if (context.AuthenticationToken == null)
             {
@@ -28,41 +30,38 @@ namespace RobinhoodCli.Commands
             Console.WriteLine($"Sending order: {Type} {Symbol} - {Size} shares - ${LimitPrice} limit");
             Console.ForegroundColor = ConsoleColor.Black;
 
-            using (RobinhoodClient client = new RobinhoodClient(context.AuthenticationToken))
+            if (!Size.HasValue)
             {
-                if (!Size.HasValue)
+                if (Type == OrderType.Buy)
                 {
-                    if (Type == OrderType.Buy)
-                    {
-                        return new ExecutionResult("Buy order without size.");
-                    }
-                    if (Type == OrderType.Sell)
-                    {
-                        // Get open position size from context
-                        // Else get open position from API
-                    }
+                    return new ExecutionResult("Buy order without size.");
+                }
+                if (Type == OrderType.Sell)
+                {
+                    // Get open position size from context
+                    // Else get open position from API
+                }
+            }
+
+            if (!LimitPrice.HasValue)
+            {
+                // Market order, get quote for price
+                var symbolResult = await client.Quote(Symbol);
+                if (!symbolResult.IsSuccessStatusCode)
+                {
+                    return new ExecutionResult("Failed to get quote for market order.");
                 }
 
-                if (!LimitPrice.HasValue)
-                {
-                    // Market order, get quote for price
-                    var symbolResult = await client.Quote(Symbol);
-                    if (!symbolResult.IsSuccessStatusCode)
-                    {
-                        return new ExecutionResult("Failed to get quote for market order.");
-                    }
+                LimitPrice = symbolResult.Data.AskPrice;
+            }
 
-                    LimitPrice = symbolResult.Data.AskPrice;
-                }
+            var accountUrl = $"https://api.robinhood.com/accounts/{context.ActiveAccount.AccountNumber}/";
+            var newOrder = CreateNewOrder(accountUrl);
+            var newOrderResult = await client.Orders(newOrder);
 
-                var accountUrl = $"https://api.robinhood.com/accounts/{context.ActiveAccount.AccountNumber}/";
-                var newOrder = CreateNewOrder(accountUrl);
-                var newOrderResult = await client.Orders(newOrder);
-
-                if (!newOrderResult.IsSuccessStatusCode)
-                {
-                    return new ExecutionResult(newOrderResult.Content);
-                }
+            if (!newOrderResult.IsSuccessStatusCode)
+            {
+                return new ExecutionResult(newOrderResult.Content);
             }
 
             return ExecutionResult.NoResult;

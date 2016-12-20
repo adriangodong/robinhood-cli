@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using RobinhoodCli.Client;
 using RobinhoodCli.Commands;
 
 namespace RobinhoodCli
@@ -14,6 +15,8 @@ namespace RobinhoodCli
             new OrderCommandParser()
         });
 
+        private static Func<string, IClient> clientFactory = (token) => new DeadlockWrapperClient(token);
+
         private static ExecutionContext ExecutionContext;
 
         public static void Main(string[] args)
@@ -24,9 +27,10 @@ namespace RobinhoodCli
             while (true)
             {
                 ICommand commandToExecute;
+
+                // If there are no command in the queue, ask for a new one from user
                 if (ExecutionContext.CommandQueue.Count == 0)
                 {
-
                     Console.Write("> ");
                     var command = Console.ReadLine();
                     commandToExecute = commandParser.Parse(command);
@@ -44,7 +48,8 @@ namespace RobinhoodCli
                 }
                 else
                 {
-                    var task = commandToExecute.Execute(ExecutionContext);
+                    var client = clientFactory(ExecutionContext.AuthenticationToken);
+                    var task = commandToExecute.Execute(client, ExecutionContext);
                     task.Wait();
                     task.Result.UpdateExecutionContext(ExecutionContext);
                     task.Result.RenderResult();

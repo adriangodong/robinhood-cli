@@ -1,5 +1,5 @@
 using System.Threading.Tasks;
-using Deadlock.Robinhood;
+using RobinhoodCli.Client;
 
 namespace RobinhoodCli.Commands
 {
@@ -9,24 +9,23 @@ namespace RobinhoodCli.Commands
         public string Username { get; set; }
         public string Password { get; set; }
 
-        public async Task<ExecutionResult> Execute(ExecutionContext context)
+        public async Task<ExecutionResult> Execute(
+            IClient client,
+            ExecutionContext context)
         {
-            using (RobinhoodClient client = new RobinhoodClient())
+            var result = await client.Login(Username, Password);
+            if (!result.IsSuccessStatusCode)
             {
-                var result = await client.Login(Username, Password);
-                if (!result.IsSuccessStatusCode)
+                return new ExecutionResult()
                 {
-                    return new ExecutionResult()
-                    {
-                        LastError = $"Login failed: {result.Content}"
-                    };
-                }
-
-                return new AuthenticationExecutionResult()
-                {
-                    AuthenticationToken = result.Data.Token
+                    LastError = $"Login failed: {result.Content}"
                 };
             }
+
+            return new AuthenticationExecutionResult()
+            {
+                AuthenticationToken = result.Data.Token
+            };
         }
 
     }

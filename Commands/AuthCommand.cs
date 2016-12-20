@@ -1,4 +1,5 @@
 using System.Threading.Tasks;
+using RobinhoodCli.Client;
 
 namespace RobinhoodCli.Commands
 {
@@ -7,7 +8,9 @@ namespace RobinhoodCli.Commands
 
         public string AuthenticationToken { get; set; }
 
-        public Task<ExecutionResult> Execute(ExecutionContext context)
+        public Task<ExecutionResult> Execute(
+            IClient client,
+            ExecutionContext context)
         {
             if (AuthenticationToken != null)
             {

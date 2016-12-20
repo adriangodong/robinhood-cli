@@ -1,34 +1,33 @@
 using System.Linq;
 using System.Threading.Tasks;
-using Deadlock.Robinhood;
+using RobinhoodCli.Client;
 
 namespace RobinhoodCli.Commands
 {
     public class AccountCommand : ICommand
     {
-        public async Task<ExecutionResult> Execute(ExecutionContext context)
+        public async Task<ExecutionResult> Execute(
+            IClient client,
+            ExecutionContext context)
         {
             if (context.AuthenticationToken == null)
             {
                 return ExecutionResult.NoResult;
             }
 
-            using (RobinhoodClient client = new RobinhoodClient(context.AuthenticationToken))
+            var result = await client.Accounts();
+            if (!result.IsSuccessStatusCode)
             {
-                var result = await client.Accounts();
-                if (!result.IsSuccessStatusCode)
+                return new ExecutionResult()
                 {
-                    return new ExecutionResult()
-                    {
-                        LastError = $"Account listing failed: {result.Content}"
-                    };
-                }
-
-                return new AccountsExecutionResult()
-                {
-                    Account = result.Data.Results.FirstOrDefault(account => !account.Deactivated)
+                    LastError = $"Account listing failed: {result.Content}"
                 };
             }
+
+            return new AccountsExecutionResult()
+            {
+                Account = result.Data.Results.FirstOrDefault(account => !account.Deactivated)
+            };
         }
     }
 }
