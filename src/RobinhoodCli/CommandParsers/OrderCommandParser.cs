@@ -1,5 +1,6 @@
 using System;
 using RobinhoodCli.Commands;
+using RobinhoodCli.Models;
 
 namespace RobinhoodCli.CommandParsers
 {

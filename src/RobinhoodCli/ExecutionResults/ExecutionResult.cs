@@ -1,6 +1,7 @@
 using System;
+using RobinhoodCli.Models;
 
-namespace RobinhoodCli.Commands
+namespace RobinhoodCli.ExecutionResults
 {
     public class ExecutionResult
     {

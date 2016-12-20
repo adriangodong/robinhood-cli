@@ -1,6 +1,7 @@
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using RobinhoodCli.CommandParsers;
 using RobinhoodCli.Commands;
+using RobinhoodCli.Models;
 
 namespace RobinhoodCli.Tests.CommandParsers
 {

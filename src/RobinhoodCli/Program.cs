@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using Deadlock.Robinhood;
 using RobinhoodCli.CommandParsers;
 using RobinhoodCli.Commands;
+using RobinhoodCli.ExecutionResults;
+using RobinhoodCli.Models;
 
 namespace RobinhoodCli
 {

@@ -1,7 +1,8 @@
 using System;
 using Deadlock.Robinhood.Model;
+using RobinhoodCli.Models;
 
-namespace RobinhoodCli.Commands
+namespace RobinhoodCli.ExecutionResults
 {
     public class AccountsExecutionResult : ExecutionResult
     {

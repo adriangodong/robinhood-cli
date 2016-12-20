@@ -1,5 +1,7 @@
 using System.Threading.Tasks;
 using Deadlock.Robinhood;
+using RobinhoodCli.ExecutionResults;
+using RobinhoodCli.Models;
 
 namespace RobinhoodCli.Commands
 {

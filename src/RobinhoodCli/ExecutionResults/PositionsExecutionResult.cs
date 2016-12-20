@@ -1,7 +1,8 @@
 using System;
 using System.Collections.Generic;
+using RobinhoodCli.Models;
 
-namespace RobinhoodCli.Commands
+namespace RobinhoodCli.ExecutionResults
 {
     public class PositionsExecutionResult : ExecutionResult
     {
@@ -25,19 +26,6 @@ namespace RobinhoodCli.Commands
             }
 
             base.RenderResult();
-        }
-    }
-
-    public class OpenPosition
-    {
-        public string AccountUrl { get; set; }
-        public string InstrumentUrl { get; set; }
-        public string Symbol { get; set; }
-        public decimal Quantity { get; set; }
-
-        public string GetInstrumentKey()
-        {
-            return InstrumentUrl.Substring(38, 36);
         }
     }
 }

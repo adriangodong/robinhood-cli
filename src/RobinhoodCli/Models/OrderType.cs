@@ -1,4 +1,4 @@
-namespace RobinhoodCli.Commands
+namespace RobinhoodCli.Models
 {
     public enum OrderType
     {
