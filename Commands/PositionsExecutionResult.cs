@@ -7,6 +7,11 @@ namespace RobinhoodCli.Commands
     {
         public List<OpenPosition> OpenPositions { get; set; }
 
+        public override void UpdateExecutionContext(ExecutionContext executionContext)
+        {
+            executionContext.OpenPositions = OpenPositions;
+        }
+
         public override void RenderResult()
         {
             if (LastError == null)

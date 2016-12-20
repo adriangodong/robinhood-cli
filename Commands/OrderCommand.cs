@@ -1,4 +1,5 @@
 using System;
+using System.Linq;
 using System.Threading.Tasks;
 using Deadlock.Robinhood.Model;
 using RobinhoodCli.Client;
@@ -9,7 +10,7 @@ namespace RobinhoodCli.Commands
     {
         public OrderType Type { get; set; }
         public string Symbol { get; set; }
-        public int? Size { get; set; }
+        public decimal? Size { get; set; }
         public decimal? LimitPrice { get; set; }
 
         public async Task<ExecutionResult> Execute(
@@ -26,10 +27,7 @@ namespace RobinhoodCli.Commands
                 return new ExecutionResult("No active account selected or found.");
             }
 
-            Console.ForegroundColor = ConsoleColor.Green;
-            Console.WriteLine($"Sending order: {Type} {Symbol} - {Size} shares - ${LimitPrice} limit");
-            Console.ForegroundColor = ConsoleColor.Black;
-
+            string instrumentUrl = null;
             if (!Size.HasValue)
             {
                 if (Type == OrderType.Buy)
@@ -39,24 +37,40 @@ namespace RobinhoodCli.Commands
                 if (Type == OrderType.Sell)
                 {
                     // Get open position size from context
+                    var openPosition = context.OpenPositions
+                        .FirstOrDefault(op => string.Equals(op.Symbol, Symbol, StringComparison.OrdinalIgnoreCase));
+
                     // Else get open position from API
+                    if (openPosition == null)
+                    {
+                        return new ExecutionResult("Can't find open position to sell. TODO");
+                    }
+
+                    Size = openPosition.Quantity;
+                    instrumentUrl = openPosition.InstrumentUrl;
                 }
+            }
+
+            var quoteResult = await client.Quote(Symbol);
+            if (!quoteResult.IsSuccessStatusCode)
+            {
+                return new ExecutionResult("Failed to get quote for market order.");
             }
 
             if (!LimitPrice.HasValue)
             {
-                // Market order, get quote for price
-                var symbolResult = await client.Quote(Symbol);
-                if (!symbolResult.IsSuccessStatusCode)
-                {
-                    return new ExecutionResult("Failed to get quote for market order.");
-                }
-
-                LimitPrice = symbolResult.Data.AskPrice;
+                // Market order, set price from quote
+                LimitPrice = quoteResult.Data.AskPrice;
             }
 
             var accountUrl = $"https://api.robinhood.com/accounts/{context.ActiveAccount.AccountNumber}/";
-            var newOrder = CreateNewOrder(accountUrl);
+            // TODO: instrument URL from quote
+            var newOrder = CreateNewOrder(accountUrl, instrumentUrl);
+
+            Console.ForegroundColor = ConsoleColor.Green;
+            Console.WriteLine($"Sending order: {Type} {Symbol} - {Size} shares - ${LimitPrice} limit");
+            Console.ForegroundColor = ConsoleColor.Black;
+
             var newOrderResult = await client.Orders(newOrder);
 
             if (!newOrderResult.IsSuccessStatusCode)
@@ -67,12 +81,12 @@ namespace RobinhoodCli.Commands
             return ExecutionResult.NoResult;
         }
 
-        internal NewOrder CreateNewOrder(string accountUrl)
+        internal NewOrder CreateNewOrder(string accountUrl, string instrumentUrl)
         {
             return new NewOrder()
             {
                 Account = accountUrl,
-                // Instrument
+                Instrument = instrumentUrl,
                 Symbol = Symbol,
                 Side = Type == OrderType.Buy ? Side.Buy : Side.Sell,
                 TimeInForce = "gfd",

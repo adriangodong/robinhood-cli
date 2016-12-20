@@ -40,7 +40,7 @@ namespace RobinhoodCli.Commands
             var order = new OrderCommand
             {
                 Type = type,
-                Symbol = commandTokens[1]
+                Symbol = commandTokens[1].ToUpper()
             };
 
             if (commandTokens.Length == 2)
