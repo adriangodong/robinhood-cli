@@ -11,7 +11,7 @@ namespace RobinhoodCli.Commands
         {
             using (RobinhoodClient client = new RobinhoodClient(context.AuthenticationToken))
             {
-                var positionResult = await client.Positions();
+                var positionResult = await client.Positions(context.ActiveAccount);
                 if (positionResult.IsSuccessStatusCode)
                 {
                     var openPositions = new List<OpenPosition>();

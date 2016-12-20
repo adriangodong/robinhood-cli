@@ -23,11 +23,20 @@ namespace RobinhoodCli
 
             while (true)
             {
-                Console.Write("> ");
-                var command = Console.ReadLine();
-                var parsedCommand = commandParser.Parse(command);
+                ICommand commandToExecute;
+                if (ExecutionContext.CommandQueue.Count == 0)
+                {
 
-                if (parsedCommand == null)
+                    Console.Write("> ");
+                    var command = Console.ReadLine();
+                    commandToExecute = commandParser.Parse(command);
+                }
+                else
+                {
+                    commandToExecute = ExecutionContext.CommandQueue.Dequeue();
+                }
+
+                if (commandToExecute == null)
                 {
                     Console.ForegroundColor = ConsoleColor.DarkRed;
                     Console.WriteLine($"ERROR: {commandParser.LastError}");
@@ -35,7 +44,7 @@ namespace RobinhoodCli
                 }
                 else
                 {
-                    var task = parsedCommand.Execute(ExecutionContext);
+                    var task = commandToExecute.Execute(ExecutionContext);
                     task.Wait();
                     task.Result.UpdateExecutionContext(ExecutionContext);
                     task.Result.RenderResult();

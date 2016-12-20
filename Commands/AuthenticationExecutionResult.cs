@@ -9,6 +9,12 @@ namespace RobinhoodCli.Commands
         public override void UpdateExecutionContext(ExecutionContext executionContext)
         {
             executionContext.AuthenticationToken = AuthenticationToken;
+
+            // Update active account
+            executionContext.CommandQueue.Enqueue(new AccountCommand());
+
+            // Show active account open positions
+            executionContext.CommandQueue.Enqueue(new PositionsCommand());
         }
 
         public override void RenderResult()
