@@ -14,7 +14,7 @@ namespace RobinhoodCli.Commands
 
         public override void RenderResult()
         {
-            Console.WriteLine($"Active account is {Account}");
+            Console.WriteLine($"Active account is {Account.AccountNumber}");
         }
     }
 }
