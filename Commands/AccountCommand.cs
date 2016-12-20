@@ -1,3 +1,4 @@
+using System.Linq;
 using System.Threading.Tasks;
 using Deadlock.Robinhood;
 
@@ -25,7 +26,7 @@ namespace RobinhoodCli.Commands
 
                 return new AccountsExecutionResult()
                 {
-                    Account = result.Data.Results[0].AccountNumber
+                    Account = result.Data.Results.FirstOrDefault(account => !account.Deactivated)
                 };
             }
         }

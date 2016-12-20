@@ -7,6 +7,15 @@ namespace RobinhoodCli.Commands
 
         public string LastError { get; set; }
 
+        public ExecutionResult()
+        {
+        }
+
+        public ExecutionResult(string lastError)
+        {
+            LastError = lastError;
+        }
+
         public virtual void UpdateExecutionContext(ExecutionContext executionContext)
         {
         }

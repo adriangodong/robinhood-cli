@@ -29,6 +29,12 @@ namespace RobinhoodCli.Commands
             {
                 if (commandTokens.Length == 2)
                 {
+                    if (commandTokens[1].Length != 40)
+                    {
+                        LastError = $"Expected 40 characters authentication token, received {commandTokens[1].Length} characters";
+                        return null;
+                    }
+
                     return new AuthCommand()
                     {
                         AuthenticationToken = commandTokens[1]

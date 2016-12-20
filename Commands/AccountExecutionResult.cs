@@ -1,10 +1,11 @@
 using System;
+using Deadlock.Robinhood.Model;
 
 namespace RobinhoodCli.Commands
 {
     public class AccountsExecutionResult : ExecutionResult
     {
-        public string Account { get; set; }
+        public Account Account { get; set; }
 
         public override void UpdateExecutionContext(ExecutionContext executionContext)
         {
