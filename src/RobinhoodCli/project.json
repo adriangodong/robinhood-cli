@@ -6,6 +6,7 @@
   },
   "testRunner": "mstest",
   "dependencies": {
+    "System.Runtime.Serialization.Primitives": "4.0.*",
     "Deadlock.Robinhood": {
       "target": "project",
       "type": "build"
