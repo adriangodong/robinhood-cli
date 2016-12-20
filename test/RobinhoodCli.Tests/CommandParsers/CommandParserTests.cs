@@ -1,9 +1,9 @@
 using System.Collections.Generic;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
-using RobinhoodCli.Commands;
+using RobinhoodCli.CommandParsers;
 
-namespace RobinhoodCli
+namespace RobinhoodCli.Tests.CommandParsers
 {
     [TestClass]
     public class CommandParserTests

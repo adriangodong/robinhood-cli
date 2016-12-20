@@ -1,7 +1,9 @@
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+using RobinhoodCli.CommandParsers;
 using RobinhoodCli.Commands;
+using RobinhoodCli.Models;
 
-namespace RobinhoodCli
+namespace RobinhoodCli.Tests.CommandParsers
 {
     [TestClass]
     public class OrderCommandParserTests
