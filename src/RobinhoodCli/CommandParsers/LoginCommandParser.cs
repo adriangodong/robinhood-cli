@@ -1,6 +1,8 @@
-namespace RobinhoodCli.Commands
+using RobinhoodCli.Commands;
+
+namespace RobinhoodCli.CommandParsers
 {
-    public class AuthCommandParser : ICommandParser
+    public class LoginCommandParser : ICommandParser
     {
 
         public const string Error_MissingParameter = "Missing parameter(s) - login (username) (password)";

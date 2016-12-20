@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using Deadlock.Robinhood;
+using RobinhoodCli.CommandParsers;
 using RobinhoodCli.Commands;
 
 namespace RobinhoodCli
@@ -9,9 +10,7 @@ namespace RobinhoodCli
     {
 
         private static CommandParser commandParser = new CommandParser(new List<ICommandParser>() {
-            new HelpCommand(),
-            new AuthCommandParser(),
-            new PositionsCommand(),
+            new LoginCommandParser(),
             new OrderCommandParser()
         });
 

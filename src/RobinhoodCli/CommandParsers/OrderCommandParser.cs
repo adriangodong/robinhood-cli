@@ -1,6 +1,7 @@
 using System;
+using RobinhoodCli.Commands;
 
-namespace RobinhoodCli.Commands
+namespace RobinhoodCli.CommandParsers
 {
     public class OrderCommandParser : ICommandParser
     {

@@ -1,4 +1,6 @@
-namespace RobinhoodCli.Commands
+using RobinhoodCli.Commands;
+
+namespace RobinhoodCli.CommandParsers
 {
     public interface ICommandParser
     {

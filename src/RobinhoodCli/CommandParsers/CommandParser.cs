@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using RobinhoodCli.Commands;
 
-namespace RobinhoodCli
+namespace RobinhoodCli.CommandParsers
 {
     public class CommandParser
     {
