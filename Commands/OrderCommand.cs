@@ -2,7 +2,7 @@ using System;
 using System.Linq;
 using System.Threading.Tasks;
 using Deadlock.Robinhood.Model;
-using RobinhoodCli.Client;
+using Deadlock.Robinhood;
 
 namespace RobinhoodCli.Commands
 {
@@ -14,7 +14,7 @@ namespace RobinhoodCli.Commands
         public decimal? LimitPrice { get; set; }
 
         public async Task<ExecutionResult> Execute(
-            IClient client,
+            IRobinhoodClient client,
             ExecutionContext context)
         {
             if (context.AuthenticationToken == null)
@@ -64,8 +64,7 @@ namespace RobinhoodCli.Commands
             }
 
             var accountUrl = $"https://api.robinhood.com/accounts/{context.ActiveAccount.AccountNumber}/";
-            // TODO: instrument URL from quote
-            var newOrder = CreateNewOrder(accountUrl, instrumentUrl);
+            var newOrder = CreateNewOrder(accountUrl, quoteResult.Data.Instrument);
 
             Console.ForegroundColor = ConsoleColor.Green;
             Console.WriteLine($"Sending order: {Type} {Symbol} - {Size} shares - ${LimitPrice} limit");

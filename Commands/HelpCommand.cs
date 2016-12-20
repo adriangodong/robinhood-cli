@@ -1,6 +1,6 @@
 using System;
 using System.Threading.Tasks;
-using RobinhoodCli.Client;
+using Deadlock.Robinhood;
 
 namespace RobinhoodCli.Commands
 {
@@ -8,7 +8,7 @@ namespace RobinhoodCli.Commands
     {
 
         public Task<ExecutionResult> Execute(
-            IClient client,
+            IRobinhoodClient client,
             ExecutionContext context)
         {
             Console.WriteLine("Help");

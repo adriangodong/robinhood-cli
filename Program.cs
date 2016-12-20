@@ -1,6 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
-using RobinhoodCli.Client;
+using Deadlock.Robinhood;
 using RobinhoodCli.Commands;
 
 namespace RobinhoodCli
@@ -14,8 +14,6 @@ namespace RobinhoodCli
             new PositionsCommand(),
             new OrderCommandParser()
         });
-
-        private static Func<string, IClient> clientFactory = (token) => new DeadlockWrapperClient(token);
 
         private static ExecutionContext ExecutionContext;
 
@@ -48,11 +46,13 @@ namespace RobinhoodCli
                 }
                 else
                 {
-                    var client = clientFactory(ExecutionContext.AuthenticationToken);
-                    var task = commandToExecute.Execute(client, ExecutionContext);
-                    task.Wait();
-                    task.Result.UpdateExecutionContext(ExecutionContext);
-                    task.Result.RenderResult();
+                    using (IRobinhoodClient client = new RobinhoodClient(ExecutionContext.AuthenticationToken))
+                    {
+                        var task = commandToExecute.Execute(client, ExecutionContext);
+                        task.Wait();
+                        task.Result.UpdateExecutionContext(ExecutionContext);
+                        task.Result.RenderResult();
+                    }
                 }
             }
         }

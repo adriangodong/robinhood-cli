@@ -1,13 +1,13 @@
 using System.Linq;
 using System.Threading.Tasks;
-using RobinhoodCli.Client;
+using Deadlock.Robinhood;
 
 namespace RobinhoodCli.Commands
 {
     public class AccountCommand : ICommand
     {
         public async Task<ExecutionResult> Execute(
-            IClient client,
+            IRobinhoodClient client,
             ExecutionContext context)
         {
             if (context.AuthenticationToken == null)
