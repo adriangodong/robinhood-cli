@@ -86,7 +86,7 @@ namespace RobinhoodCli.Commands
             {
                 Account = accountUrl,
                 Instrument = instrumentUrl,
-                Symbol = Symbol,
+                Symbol = Symbol.ToUpper(),
                 Side = Type == OrderType.Buy ? Side.Buy : Side.Sell,
                 TimeInForce = "gfd",
                 Trigger = "immediate",
