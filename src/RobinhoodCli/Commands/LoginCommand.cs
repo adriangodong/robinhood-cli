@@ -10,11 +10,13 @@ namespace RobinhoodCli.Commands
 
         internal string Username { get; private set; }
         internal string Password { get; private set; }
+        internal bool SaveAuthenticationToken { get; private set; }
 
-        public LoginCommand(string username, string password)
+        public LoginCommand(string username, string password, bool saveAuthenticationToken)
         {
             Username = username;
             Password = password;
+            SaveAuthenticationToken = saveAuthenticationToken;
         }
 
         public async Task Execute(
@@ -30,6 +32,10 @@ namespace RobinhoodCli.Commands
 
             Console.WriteLine("Login successful");
             Console.WriteLine();
+            if (SaveAuthenticationToken)
+            {
+                context.CommandQueue.Enqueue(new SaveAuthenticationTokenCommand(result.Data.Token));
+            }
             context.CommandQueue.Enqueue(new SetAuthenticationTokenCommand(result.Data.Token));
         }
 

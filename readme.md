@@ -14,23 +14,19 @@ You need .NET Core 1.1 SDK, Preview 2. If you don't know what this is, stop and 
 
 Clone the repository and the submodule using the following command:
 
-      git clone https://github.com/adriangodong/robinhood-cli --recursive
+    git clone https://github.com/adriangodong/robinhood-cli --recursive
 
 Build and run using the following command:
 
-      cd robinhood-cli
-      dotnet restore && dotnet run --project src/RobinhoodCli
+    cd robinhood-cli
+    dotnet restore && dotnet run --project src/RobinhoodCli
 
 ## Usage / Commands
 
 ### Login
 
-    login username password
-    - username: required
-    - password: required
-
-    login-token token
-    - token: required, use a previously issued authentication token
+    login username password [--save]
+    - --save: optional switch parameter to save login for future runs
 
 ### Place an order
 

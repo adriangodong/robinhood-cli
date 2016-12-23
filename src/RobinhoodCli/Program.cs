@@ -21,12 +21,12 @@ namespace RobinhoodCli
 
         public static void Main(string[] args)
         {
-            ConfigurationBuilder configurationBuilder = new ConfigurationBuilder();
-            configurationBuilder.AddJsonFile("config.json", true);
-            var configurationRoot = configurationBuilder.Build();
+            var configuration = new ConfigurationBuilder()
+                .AddJsonFile("config.json", true)
+                .Build();
 
             ExecutionContext = new ExecutionContext();
-            ExecutionContext.CommandQueue.Enqueue(new InitCommand(configurationRoot));
+            ExecutionContext.CommandQueue.Enqueue(new InitCommand(configuration));
 
             while (true)
             {
