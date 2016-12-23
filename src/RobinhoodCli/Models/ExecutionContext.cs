@@ -6,6 +6,7 @@ namespace RobinhoodCli.Models
 {
     internal class ExecutionContext
     {
+
         public string AuthenticationToken { get; set; }
         public Account ActiveAccount { get; set; }
         public List<OpenPosition> OpenPositions { get; set; }
@@ -41,7 +42,7 @@ namespace RobinhoodCli.Models
 
         internal int GetNextOpenOrderIndex()
         {
-            int maxIndex = -1;
+            int maxIndex = 0;
 
             foreach (var openOrder in OpenOrders)
             {

@@ -22,6 +22,9 @@ namespace RobinhoodCli.CommandParsers
                 case "sell":
                 case "s":
                     return ParseCommandTokens(OrderType.Sell, commandTokens);
+
+                case "cancel":
+                    return ParseCancelOpenOrderCommandParser(commandTokens);
             }
 
             return null;
@@ -85,6 +88,26 @@ namespace RobinhoodCli.CommandParsers
             prepareOrderCommand.LimitPrice = limitPrice;
 
             return prepareOrderCommand;
+        }
+
+        internal CancelOpenOrderCommand ParseCancelOpenOrderCommandParser(string[] commandTokens)
+        {
+            LastError = null;
+
+            if (commandTokens.Length == 1)
+            {
+                LastError = "Missing order index parameter";
+                return null;
+            }
+
+            int openOrderIndexToCancel;
+            if (!int.TryParse(commandTokens[1], out openOrderIndexToCancel))
+            {
+                LastError = "Can't parse order index parameter";
+                return null;
+            }
+
+            return new CancelOpenOrderCommand(openOrderIndexToCancel);
         }
     }
 }

@@ -33,6 +33,7 @@ namespace RobinhoodCli.Commands
             }
 
             Console.WriteLine("Order placed!");
+            context.CommandQueue.Enqueue(new UpdateOpenOrdersCommand());
         }
 
     }
