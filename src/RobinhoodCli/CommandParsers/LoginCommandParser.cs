@@ -33,6 +33,11 @@ namespace RobinhoodCli.CommandParsers
 
             }
 
+            if (commandTokens[0] == "logout")
+            {
+                return new LogoutCommand();
+            }
+
             return null;
         }
 

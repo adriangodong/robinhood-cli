@@ -83,6 +83,10 @@ Update and show current open positions.
 
 Update and show current open orders.
 
+    logout
+
+Clears authentication token from stored configuration and current session.
+
     exit
 
 Exits the application.

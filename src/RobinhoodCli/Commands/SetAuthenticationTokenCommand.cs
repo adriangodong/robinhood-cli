@@ -20,14 +20,22 @@ namespace RobinhoodCli.Commands
         {
             context.AuthenticationToken = AuthenticationToken;
 
-            // Update active account
-            context.CommandQueue.Enqueue(new AccountCommand());
+            if (!string.IsNullOrEmpty(AuthenticationToken))
+            {
+                // Update active account
+                context.CommandQueue.Enqueue(new AccountCommand());
 
-            // Show active account open positions
-            context.CommandQueue.Enqueue(new UpdateOpenPositionsCommand());
+                // Show active account open positions
+                context.CommandQueue.Enqueue(new UpdateOpenPositionsCommand());
 
-            // Show active account open orders
-            context.CommandQueue.Enqueue(new UpdateOpenOrdersCommand());
+                // Show active account open orders
+                context.CommandQueue.Enqueue(new UpdateOpenOrdersCommand());
+            }
+            else
+            {
+                // Unset active account
+                context.ActiveAccount = null;
+            }
 
             return Task.CompletedTask;
         }
