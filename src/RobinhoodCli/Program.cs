@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using Microsoft.Extensions.Configuration;
 using Deadlock.Robinhood;
 using RobinhoodCli.CommandParsers;
 using RobinhoodCli.Commands;
@@ -20,8 +21,12 @@ namespace RobinhoodCli
 
         public static void Main(string[] args)
         {
+            ConfigurationBuilder configurationBuilder = new ConfigurationBuilder();
+            configurationBuilder.AddJsonFile("config.json", true);
+            var configurationRoot = configurationBuilder.Build();
+
             ExecutionContext = new ExecutionContext();
-            Console.WriteLine("Robinhood CLI.");
+            ExecutionContext.CommandQueue.Enqueue(new InitCommand(configurationRoot));
 
             while (true)
             {
@@ -54,5 +59,6 @@ namespace RobinhoodCli
                 }
             }
         }
+
     }
 }

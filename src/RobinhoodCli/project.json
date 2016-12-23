@@ -2,11 +2,16 @@
   "version": "1.0.0-*",
   "buildOptions": {
     "debugType": "portable",
+    "copyToOutput": {
+      "includeFiles": "config.json"
+    },
     "emitEntryPoint": true
   },
   "testRunner": "mstest",
   "dependencies": {
-    "System.Runtime.Serialization.Primitives": "4.0.*",
+    "System.Runtime.Serialization.Primitives": "4.1.1",
+    "Microsoft.Extensions.Configuration": "1.0.1",
+    "Microsoft.Extensions.Configuration.Json": "1.0.1",
     "Deadlock.Robinhood": {
       "target": "project",
       "type": "build"
