@@ -22,6 +22,7 @@ namespace RobinhoodCli.Commands
         {
             Console.Clear();
             Console.WriteLine("Welcome to Robinhood CLI.");
+            Console.WriteLine();
 
             if (!string.IsNullOrEmpty(AuthenticationToken))
             {

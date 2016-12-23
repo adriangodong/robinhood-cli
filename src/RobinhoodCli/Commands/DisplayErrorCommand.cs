@@ -21,6 +21,7 @@ namespace RobinhoodCli.Commands
         {
             Console.ForegroundColor = ConsoleColor.DarkRed;
             Console.WriteLine($"ERROR: {error}");
+            Console.WriteLine();
             Console.ResetColor();
 
             return Task.CompletedTask;

@@ -37,6 +37,7 @@ namespace RobinhoodCli.Commands
             }
 
             Console.WriteLine($"Order cancelled.");
+            Console.WriteLine();
             context.CommandQueue.Enqueue(new UpdateOpenOrdersCommand());
         }
 

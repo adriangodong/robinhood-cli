@@ -29,6 +29,7 @@ namespace RobinhoodCli.Commands
             }
 
             Console.WriteLine("Login successful");
+            Console.WriteLine();
             context.CommandQueue.Enqueue(new SetAuthenticationTokenCommand(result.Data.Token));
         }
 

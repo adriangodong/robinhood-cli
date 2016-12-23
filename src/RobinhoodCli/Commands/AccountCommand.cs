@@ -29,6 +29,7 @@ namespace RobinhoodCli.Commands
 
             context.ActiveAccount = activeAccount;
             Console.WriteLine($"Active account is {activeAccount.AccountNumber}");
+            Console.WriteLine();
         }
 
     }

@@ -41,12 +41,12 @@ namespace RobinhoodCli.Commands
 
         internal void RenderOpenOrders(List<OpenOrder> openOrders)
         {
-            Console.WriteLine();
             Console.WriteLine("Open orders:");
             foreach (var openOrder in openOrders)
             {
                 Console.WriteLine($"[{openOrder.Index}] {openOrder.Order.Side} {openOrder.Instrument.Symbol} {openOrder.Order.Quantity} {openOrder.Order.Price}");
             }
+            Console.WriteLine();
         }
 
     }

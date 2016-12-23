@@ -49,12 +49,12 @@ namespace RobinhoodCli.Commands
 
         internal void RenderOpenPositions(List<OpenPosition> openPositions)
         {
-            Console.WriteLine();
             Console.WriteLine("Open positions:");
             foreach (var openPosition in openPositions)
             {
                 Console.WriteLine($"{openPosition.Instrument.Symbol}: {openPosition.Position.Quantity}");
             }
+            Console.WriteLine();
         }
 
     }
