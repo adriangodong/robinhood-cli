@@ -63,6 +63,9 @@ They will create a market sell order for MSFT, order size is equal to open share
 
 ### Other commands
 
+    position
+    Update and show current open positions.
+
     exit
     Exits the application.
 

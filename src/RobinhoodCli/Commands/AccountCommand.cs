@@ -1,35 +1,35 @@
+using System;
 using System.Linq;
 using System.Threading.Tasks;
 using Deadlock.Robinhood;
-using RobinhoodCli.ExecutionResults;
 using RobinhoodCli.Models;
 
 namespace RobinhoodCli.Commands
 {
-    public class AccountCommand : ICommand
+    internal class AccountCommand : AuthenticationRequiredCommand
     {
-        public async Task<ExecutionResult> Execute(
+
+        public override async Task ExecuteWithAuthentication(
             IRobinhoodClient client,
             ExecutionContext context)
         {
-            if (context.AuthenticationToken == null)
-            {
-                return ExecutionResult.NoResult;
-            }
-
             var result = await client.Accounts();
             if (!result.IsSuccessStatusCode)
             {
-                return new ExecutionResult()
-                {
-                    LastError = $"Account listing failed: {result.Content}"
-                };
+                context.ReplaceCommandQueueWithDisplayError($"Account listing failed: {result.Content}");
+                return;
             }
 
-            return new AccountsExecutionResult()
+            var activeAccount = result.Data.Results.FirstOrDefault(account => !account.Deactivated);
+            if (activeAccount == null)
             {
-                Account = result.Data.Results.FirstOrDefault(account => !account.Deactivated)
-            };
+                context.ReplaceCommandQueueWithDisplayError($"No active account found");
+                return;
+            }
+
+            context.ActiveAccount = activeAccount;
+            Console.WriteLine($"Active account is {activeAccount.AccountNumber}");
         }
+
     }
 }

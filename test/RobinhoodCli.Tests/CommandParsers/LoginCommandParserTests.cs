@@ -95,7 +95,7 @@ namespace RobinhoodCli.Tests.CommandParsers
             var token = "1234567890123456789012345678901234567890";
 
             // Act
-            var authCommand = loginCommandParser.Parse(new[] { "login-token", token }) as AuthCommand;
+            var authCommand = loginCommandParser.Parse(new[] { "login-token", token }) as SetAuthenticationTokenCommand;
 
             // Assert
             Assert.IsNotNull(authCommand);

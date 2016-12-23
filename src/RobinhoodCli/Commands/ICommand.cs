@@ -1,13 +1,12 @@
 using System.Threading.Tasks;
 using Deadlock.Robinhood;
-using RobinhoodCli.ExecutionResults;
 using RobinhoodCli.Models;
 
 namespace RobinhoodCli.Commands
 {
-    public interface ICommand
+    internal interface ICommand
     {
-        Task<ExecutionResult> Execute(
+        Task Execute(
             IRobinhoodClient client,
             ExecutionContext context);
     }

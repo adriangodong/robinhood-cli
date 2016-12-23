@@ -4,7 +4,7 @@ using RobinhoodCli.Models;
 
 namespace RobinhoodCli.CommandParsers
 {
-    public class OrderCommandParser : ICommandParser
+    internal class OrderCommandParser : ICommandParser
     {
         public const string Error_EmptySymbol = "Missing symbol parameter";
         public const string Error_EmptySizeParameter = "Missing size parameter, required for buy order";

@@ -5,7 +5,7 @@ using RobinhoodCli.Commands;
 
 namespace RobinhoodCli.CommandParsers
 {
-    public class CommandParser
+    internal class CommandParser
     {
 
         public const string Error_EmptyCommand = "Empty command";

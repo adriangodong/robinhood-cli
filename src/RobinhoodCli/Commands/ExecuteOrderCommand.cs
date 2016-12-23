@@ -2,36 +2,38 @@ using System;
 using System.Threading.Tasks;
 using Deadlock.Robinhood.Model;
 using Deadlock.Robinhood;
-using RobinhoodCli.ExecutionResults;
 using RobinhoodCli.Models;
 
 namespace RobinhoodCli.Commands
 {
-    public class ExecuteOrderCommand : ICommand
+    internal class ExecuteOrderCommand : AuthenticationRequiredCommand
     {
-        public NewOrder NewOrder { get; private set; }
+
+        private readonly NewOrder newOrder;
 
         public ExecuteOrderCommand(NewOrder newOrder)
         {
-            NewOrder = newOrder;
+            this.newOrder = newOrder;
         }
 
-        public async Task<ExecutionResult> Execute(
+        public override async Task ExecuteWithAuthentication(
             IRobinhoodClient client,
             ExecutionContext context)
         {
             Console.ForegroundColor = ConsoleColor.Green;
-            Console.WriteLine($"Sending order: {NewOrder.Side} {NewOrder.Symbol} - {NewOrder.Quantity} shares - ${NewOrder.Price} limit");
+            Console.WriteLine($"Sending order: {newOrder.Side} {newOrder.Symbol} - {newOrder.Quantity} shares - ${newOrder.Price} limit");
             Console.ForegroundColor = ConsoleColor.Black;
 
-            var newOrderResult = await client.Orders(NewOrder);
+            var newOrderResult = await client.Orders(newOrder);
 
             if (!newOrderResult.IsSuccessStatusCode)
             {
-                return new ExecutionResult(newOrderResult.Content);
+                context.ReplaceCommandQueueWithDisplayError(newOrderResult.Content);
+                return;
             }
 
-            return new NewOrderExecutionResult(newOrderResult.Data);
+            Console.WriteLine("Order placed!");
         }
+
     }
 }

@@ -49,10 +49,7 @@ namespace RobinhoodCli
                 {
                     using (IRobinhoodClient client = new RobinhoodClient(ExecutionContext.AuthenticationToken))
                     {
-                        var task = commandToExecute.Execute(client, ExecutionContext);
-                        task.Wait();
-                        task.Result.UpdateExecutionContext(ExecutionContext);
-                        task.Result.RenderResult();
+                        commandToExecute.Execute(client, ExecutionContext).Wait();
                     }
                 }
             }

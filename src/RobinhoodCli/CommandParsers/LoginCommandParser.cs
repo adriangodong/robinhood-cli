@@ -2,7 +2,7 @@ using RobinhoodCli.Commands;
 
 namespace RobinhoodCli.CommandParsers
 {
-    public class LoginCommandParser : ICommandParser
+    internal class LoginCommandParser : ICommandParser
     {
 
         public const string Error_MissingParameter = "Missing parameter(s) - login (username) (password)";
@@ -17,11 +17,7 @@ namespace RobinhoodCli.CommandParsers
             {
                 if (commandTokens.Length == 3)
                 {
-                    return new LoginCommand()
-                    {
-                        Username = commandTokens[1],
-                        Password = commandTokens[2]
-                    };
+                    return new LoginCommand(commandTokens[1], commandTokens[2]);
                 }
 
                 LastError = Error_MissingParameter;
@@ -38,10 +34,7 @@ namespace RobinhoodCli.CommandParsers
                         return null;
                     }
 
-                    return new AuthCommand()
-                    {
-                        AuthenticationToken = commandTokens[1]
-                    };
+                    return new SetAuthenticationTokenCommand(commandTokens[1]);
                 }
 
                 LastError = Error_MissingToken;

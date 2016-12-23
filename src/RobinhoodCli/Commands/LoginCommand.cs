@@ -1,33 +1,35 @@
+using System;
 using System.Threading.Tasks;
 using Deadlock.Robinhood;
-using RobinhoodCli.ExecutionResults;
 using RobinhoodCli.Models;
 
 namespace RobinhoodCli.Commands
 {
-    public class LoginCommand : ICommand
+    internal class LoginCommand : ICommand
     {
 
-        public string Username { get; set; }
-        public string Password { get; set; }
+        internal string Username { get; private set; }
+        internal string Password { get; private set; }
 
-        public async Task<ExecutionResult> Execute(
+        public LoginCommand(string username, string password)
+        {
+            Username = username;
+            Password = password;
+        }
+
+        public async Task Execute(
             IRobinhoodClient client,
             ExecutionContext context)
         {
             var result = await client.Login(Username, Password);
             if (!result.IsSuccessStatusCode)
             {
-                return new ExecutionResult()
-                {
-                    LastError = $"Login failed: {result.Content}"
-                };
+                context.ReplaceCommandQueueWithDisplayError($"Login failed: {result.Content}");
+                return;
             }
 
-            return new AuthenticationExecutionResult()
-            {
-                AuthenticationToken = result.Data.Token
-            };
+            Console.WriteLine("Login successful");
+            context.CommandQueue.Enqueue(new SetAuthenticationTokenCommand(result.Data.Token));
         }
 
     }
