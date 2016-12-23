@@ -13,6 +13,9 @@
       "type": "build"
     }
   },
+  "tools": {
+    "Microsoft.Dotnet.Watcher.Tools": "1.1.0-*"
+  },
   "frameworks": {
     "netcoreapp1.1": {
       "dependencies": {

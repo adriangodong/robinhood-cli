@@ -7,6 +7,7 @@ namespace RobinhoodCli.CommandParsers
 
         public const string Error_MissingParameter = "Missing parameter(s) - login (username) (password)";
         public const string Error_MissingToken = "Missing parameter - login-token (token)";
+        public const string Error_InvalidTokenFormat = "Expected 40 characters authentication token, received {0} characters";
 
         public ICommand Parse(string[] commandTokens)
         {
@@ -33,7 +34,7 @@ namespace RobinhoodCli.CommandParsers
                 {
                     if (commandTokens[1].Length != 40)
                     {
-                        LastError = $"Expected 40 characters authentication token, received {commandTokens[1].Length} characters";
+                        LastError = string.Format(Error_InvalidTokenFormat, commandTokens[1].Length);
                         return null;
                     }
 
