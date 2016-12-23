@@ -20,30 +20,23 @@ namespace RobinhoodCli.Commands
                 return;
             }
 
-            var openOrders = new List<OpenOrder>();
+            context.ClearOpenOrders();
             foreach (var order in ordersResult.Data.Results)
             {
                 if (order.State == "confirmed")
                 {
-                    var openOrder = new OpenOrder();
-                    openOrder.Order = order;
-
-                    var instrumentResult = await client.Instrument(openOrder.GetInstrumentKey());
-                    if (instrumentResult.IsSuccessStatusCode)
-                    {
-                        openOrder.Instrument = instrumentResult.Data;
-                    }
-                    else
+                    var instrumentResult = await client.Instrument(order.GetInstrumentKey());
+                    if (!instrumentResult.IsSuccessStatusCode)
                     {
                         context.ReplaceCommandQueueWithDisplayError(instrumentResult.Content);
                         return;
                     }
 
-                    openOrders.Add(openOrder);
+                    context.AddOpenOrder(order, instrumentResult.Data);
                 }
             }
-            context.OpenOrders = openOrders;
-            RenderOpenOrders(openOrders);
+
+            RenderOpenOrders(context.OpenOrders);
         }
 
         internal void RenderOpenOrders(List<OpenOrder> openOrders)
@@ -52,7 +45,7 @@ namespace RobinhoodCli.Commands
             Console.WriteLine("Open orders:");
             foreach (var openOrder in openOrders)
             {
-                Console.WriteLine($"{openOrder.Order.Side} {openOrder.Instrument.Symbol} {openOrder.Order.Quantity} {openOrder.Order.Price}");
+                Console.WriteLine($"[{openOrder.Index}] {openOrder.Order.Side} {openOrder.Instrument.Symbol} {openOrder.Order.Quantity} {openOrder.Order.Price}");
             }
         }
 
