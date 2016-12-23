@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using Deadlock.Robinhood;
 using RobinhoodCli.CommandParsers;
 using RobinhoodCli.Commands;
-using RobinhoodCli.ExecutionResults;
 using RobinhoodCli.Models;
 
 namespace RobinhoodCli
@@ -12,6 +11,7 @@ namespace RobinhoodCli
     {
 
         private static CommandParser commandParser = new CommandParser(new List<ICommandParser>() {
+            new BasicCommandParser(),
             new LoginCommandParser(),
             new OrderCommandParser()
         });
@@ -21,7 +21,7 @@ namespace RobinhoodCli
         public static void Main(string[] args)
         {
             ExecutionContext = new ExecutionContext();
-            Console.WriteLine("Robinhood CLI. Press Ctrl+C to exit.");
+            Console.WriteLine("Robinhood CLI.");
 
             while (true)
             {
