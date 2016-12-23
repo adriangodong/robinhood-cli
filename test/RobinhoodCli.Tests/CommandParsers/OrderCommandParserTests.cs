@@ -9,41 +9,41 @@ namespace RobinhoodCli.Tests.CommandParsers
     public class OrderCommandParserTests
     {
 
-        private OrderCommandParser commandParser;
+        private OrderCommandParser orderCommandParser;
 
         [TestInitialize]
         public void Init()
         {
-            commandParser = new OrderCommandParser();
+            orderCommandParser = new OrderCommandParser();
         }
 
         [TestMethod]
         public void ParseCommandTokens_ShouldReturnNull_WithMissingSymbol()
         {
             // Act
-            var orderCommand = commandParser.ParseCommandTokens(OrderType.Unknown, new[] { "unknown" });
+            var orderCommand = orderCommandParser.ParseCommandTokens(OrderType.Unknown, new[] { "unknown" });
 
             // Assert
             Assert.IsNull(orderCommand);
-            Assert.AreEqual(OrderCommandParser.Error_EmptySymbol, commandParser.LastError);
+            Assert.AreEqual(OrderCommandParser.Error_MissingSymbolParameter, orderCommandParser.LastError);
         }
 
         [TestMethod]
         public void ParseCommandTokens_ShouldReturnNull_WithBuyTypeAndMissingSize()
         {
             // Act
-            var orderCommand = commandParser.ParseCommandTokens(OrderType.Buy, new[] { "buy", "hood" });
+            var orderCommand = orderCommandParser.ParseCommandTokens(OrderType.Buy, new[] { "buy", "hood" });
 
             // Assert
             Assert.IsNull(orderCommand);
-            Assert.AreEqual(OrderCommandParser.Error_EmptySizeParameter, commandParser.LastError);
+            Assert.AreEqual(OrderCommandParser.Error_EmptySizeParameter, orderCommandParser.LastError);
         }
 
         [TestMethod]
         public void ParseCommandTokens_ShouldReturnOrder_WithSellTypeAndMissingSize()
         {
             // Act
-            var orderCommand = commandParser.ParseCommandTokens(OrderType.Sell, new[] { "sell", "hood" });
+            var orderCommand = orderCommandParser.ParseCommandTokens(OrderType.Sell, new[] { "sell", "hood" });
 
             // Assert
             Assert.IsNotNull(orderCommand);
@@ -57,20 +57,20 @@ namespace RobinhoodCli.Tests.CommandParsers
         public void ParseCommandTokens_ShouldReturnNull_WithBadSize()
         {
             // Act
-            var orderCommand = commandParser.ParseCommandTokens(OrderType.Unknown, new[] { "unknown", "hood", "one" });
+            var orderCommand = orderCommandParser.ParseCommandTokens(OrderType.Unknown, new[] { "unknown", "hood", "one" });
 
             // Assert
             Assert.IsNull(orderCommand);
             Assert.AreEqual(
                 string.Format(OrderCommandParser.Error_BadSizeParameter, "one"),
-                commandParser.LastError);
+                orderCommandParser.LastError);
         }
 
         [TestMethod]
         public void ParseCommandTokens_ShouldReturnOrder_WithMissingLimitPrice()
         {
             // Act
-            var orderCommand = commandParser.ParseCommandTokens(OrderType.Unknown, new[] { "unknown", "hood", "123" });
+            var orderCommand = orderCommandParser.ParseCommandTokens(OrderType.Unknown, new[] { "unknown", "hood", "123" });
 
             // Assert
             Assert.IsNotNull(orderCommand);
@@ -84,20 +84,20 @@ namespace RobinhoodCli.Tests.CommandParsers
         public void ParseCommandTokens_ShouldReturnNull_WithBadLimitPrice()
         {
             // Act
-            var orderCommand = commandParser.ParseCommandTokens(OrderType.Unknown, new[] { "unknown", "hood", "123", "1-23" });
+            var orderCommand = orderCommandParser.ParseCommandTokens(OrderType.Unknown, new[] { "unknown", "hood", "123", "1-23" });
 
             // Assert
             Assert.IsNull(orderCommand);
             Assert.AreEqual(
                 string.Format(OrderCommandParser.Error_BadLimitPriceParameter, "1-23"),
-                commandParser.LastError);
+                orderCommandParser.LastError);
         }
 
         [TestMethod]
         public void ParseCommandTokens_ShouldReturnOrderCommand()
         {
             // Act
-            var orderCommand = commandParser.ParseCommandTokens(OrderType.Unknown, new[] { "unknown", "hood", "123", "1.23" });
+            var orderCommand = orderCommandParser.ParseCommandTokens(OrderType.Unknown, new[] { "unknown", "hood", "123", "1.23" });
 
             // Assert
             Assert.IsNotNull(orderCommand);
@@ -108,11 +108,47 @@ namespace RobinhoodCli.Tests.CommandParsers
         }
 
         [TestMethod]
+        public void ParseCancelOpenOrderCommandParser_ShouldReturnNull_WithMissingIndex()
+        {
+            // Act
+            var cancelOpenOrderCommand = orderCommandParser.ParseCancelOpenOrderCommandParser(new[] { "cancel" });
+
+            // Assert
+            Assert.IsNull(cancelOpenOrderCommand);
+            Assert.AreEqual(OrderCommandParser.Error_MissingIndexParameter, orderCommandParser.LastError);
+        }
+
+        [TestMethod]
+        public void ParseCancelOpenOrderCommandParser_ShouldReturnNull_WithBadIndex()
+        {
+            // Act
+            var cancelOpenOrderCommand = orderCommandParser.ParseCancelOpenOrderCommandParser(new[] { "cancel", "hood" });
+
+            // Assert
+            Assert.IsNull(cancelOpenOrderCommand);
+            Assert.AreEqual(
+                string.Format(OrderCommandParser.Error_BadIndexParameter, "hood"),
+                orderCommandParser.LastError);
+        }
+
+        [TestMethod]
+        public void ParseCancelOpenOrderCommandParser_ShouldReturnCancelOrderCommand()
+        {
+            // Act
+            var cancelOpenOrderCommand = orderCommandParser.ParseCancelOpenOrderCommandParser(new[] { "cancel", "1" });
+
+            // Assert
+            Assert.IsNotNull(cancelOpenOrderCommand);
+            Assert.AreEqual(1, cancelOpenOrderCommand.OpenOrderIndexToCancel);
+            Assert.IsNull(orderCommandParser.LastError);
+        }
+
+        [TestMethod]
         public void Parse_ShouldReturnBuyOrder_WithBuyTypeParameter()
         {
             // Act
-            var buyOrderCommand = commandParser.Parse(new[] { "buy", "hood", "1" }) as PrepareOrderCommand;
-            var bOrderCommand = commandParser.Parse(new[] { "b", "hood", "1" }) as PrepareOrderCommand;
+            var buyOrderCommand = orderCommandParser.Parse(new[] { "buy", "hood", "1" }) as PrepareOrderCommand;
+            var bOrderCommand = orderCommandParser.Parse(new[] { "b", "hood", "1" }) as PrepareOrderCommand;
 
             // Assert
             Assert.IsNotNull(buyOrderCommand);
@@ -130,8 +166,8 @@ namespace RobinhoodCli.Tests.CommandParsers
         public void Parse_ShouldReturnSellOrder_WithSellTypeParameter()
         {
             // Act
-            var sellOrderCommand = commandParser.Parse(new[] { "sell", "hood" }) as PrepareOrderCommand;
-            var sOrderCommand = commandParser.Parse(new[] { "s", "hood" }) as PrepareOrderCommand;
+            var sellOrderCommand = orderCommandParser.Parse(new[] { "sell", "hood" }) as PrepareOrderCommand;
+            var sOrderCommand = orderCommandParser.Parse(new[] { "s", "hood" }) as PrepareOrderCommand;
 
             // Assert
             Assert.IsNotNull(sellOrderCommand);
@@ -143,6 +179,17 @@ namespace RobinhoodCli.Tests.CommandParsers
             Assert.AreEqual(OrderType.Sell, sOrderCommand.Type);
             Assert.IsNull(sOrderCommand.Size);
             Assert.IsNull(sOrderCommand.LimitPrice);
+        }
+
+        [TestMethod]
+        public void Parse_ShouldReturnCancelOrderCommand_WithCancelCommand()
+        {
+            // Act
+            var cancelOpenOrderCommand = orderCommandParser.Parse(new[] { "cancel", "1" }) as CancelOpenOrderCommand;
+
+            // Assert
+            Assert.IsNotNull(cancelOpenOrderCommand);
+            Assert.IsNull(orderCommandParser.LastError);
         }
 
     }

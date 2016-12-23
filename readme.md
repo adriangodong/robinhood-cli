@@ -61,16 +61,35 @@ Example 5: Exit all MSFT position
 Both commands above will create the same order.
 They will create a market sell order for MSFT, order size is equal to open shares count.
 
+### Cancel an open order
+
+    cancel order-index
+
+Cancel an open order at order-index position. You can retrieve open orders using the `orders` command.
+
+Example: Cancel the first order in the list
+
+    orders
+
+    Open orders:
+    [1] Sell HOOD 1.00 1.00
+    [2] Buy HOOD 3.00 2.00
+
+    cancel 1
+
 ### Other commands
 
     positions
-    Update and show current open positions.
+
+Update and show current open positions.
 
     orders
-    Update and show current open orders.
+
+Update and show current open orders.
 
     exit
-    Exits the application.
+
+Exits the application.
 
 ## Developer Notes
 

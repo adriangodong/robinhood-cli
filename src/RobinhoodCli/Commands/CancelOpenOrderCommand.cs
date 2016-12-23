@@ -6,7 +6,7 @@ using RobinhoodCli.Models;
 
 namespace RobinhoodCli.Commands
 {
-    internal class CancelOpenOrderCommand : ActiveAccountRequiredCommand
+    internal class CancelOpenOrderCommand : AuthenticationRequiredCommand
     {
 
         internal int OpenOrderIndexToCancel { get; private set; }
@@ -16,7 +16,7 @@ namespace RobinhoodCli.Commands
             OpenOrderIndexToCancel = openOrderIndexToCancel;
         }
 
-        public override async Task ExecuteWithActiveAccount(
+        public override async Task ExecuteWithAuthentication(
             IRobinhoodClient client,
             ExecutionContext context)
         {

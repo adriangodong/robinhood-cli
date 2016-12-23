@@ -6,10 +6,12 @@ namespace RobinhoodCli.CommandParsers
 {
     internal class OrderCommandParser : ICommandParser
     {
-        public const string Error_EmptySymbol = "Missing symbol parameter";
+        public const string Error_MissingSymbolParameter = "Missing symbol parameter";
         public const string Error_EmptySizeParameter = "Missing size parameter, required for buy order";
         public const string Error_BadSizeParameter = "Cannot parse size parameter '{0}'";
         public const string Error_BadLimitPriceParameter = "Cannot parse limit price parameter '{0}'";
+        public const string Error_MissingIndexParameter = "Missing order index to cancel";
+        public const string Error_BadIndexParameter = "Cannot parse order index parameter '{0}'";
 
         public ICommand Parse(string[] commandTokens)
         {
@@ -38,7 +40,7 @@ namespace RobinhoodCli.CommandParsers
 
             if (commandTokens.Length == 1)
             {
-                LastError = Error_EmptySymbol;
+                LastError = Error_MissingSymbolParameter;
                 return null;
             }
 
@@ -96,14 +98,14 @@ namespace RobinhoodCli.CommandParsers
 
             if (commandTokens.Length == 1)
             {
-                LastError = "Missing order index parameter";
+                LastError = Error_MissingIndexParameter;
                 return null;
             }
 
             int openOrderIndexToCancel;
             if (!int.TryParse(commandTokens[1], out openOrderIndexToCancel))
             {
-                LastError = "Can't parse order index parameter";
+                LastError = string.Format(Error_BadIndexParameter, commandTokens[1]);
                 return null;
             }
 
