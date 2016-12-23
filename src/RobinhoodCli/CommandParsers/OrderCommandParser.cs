@@ -19,14 +19,14 @@ namespace RobinhoodCli.CommandParsers
             {
                 case "buy":
                 case "b":
-                    return ParseCommandTokens(OrderType.Buy, commandTokens);
+                    return ParsePrepareOrderCommand(OrderType.Buy, commandTokens);
 
                 case "sell":
                 case "s":
-                    return ParseCommandTokens(OrderType.Sell, commandTokens);
+                    return ParsePrepareOrderCommand(OrderType.Sell, commandTokens);
 
                 case "cancel":
-                    return ParseCancelOpenOrderCommandParser(commandTokens);
+                    return ParseCancelOpenOrderCommand(commandTokens);
             }
 
             return null;
@@ -34,7 +34,7 @@ namespace RobinhoodCli.CommandParsers
 
         public string LastError { get; private set; }
 
-        internal PrepareOrderCommand ParseCommandTokens(OrderType type, string[] commandTokens)
+        internal PrepareOrderCommand ParsePrepareOrderCommand(OrderType type, string[] commandTokens)
         {
             LastError = null;
 
@@ -92,7 +92,7 @@ namespace RobinhoodCli.CommandParsers
             return prepareOrderCommand;
         }
 
-        internal CancelOpenOrderCommand ParseCancelOpenOrderCommandParser(string[] commandTokens)
+        internal CancelOpenOrderCommand ParseCancelOpenOrderCommand(string[] commandTokens)
         {
             LastError = null;
 
