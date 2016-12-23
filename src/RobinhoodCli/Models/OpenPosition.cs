@@ -1,15 +1,15 @@
+using Deadlock.Robinhood.Model;
+
 namespace RobinhoodCli.Models
 {
     public class OpenPosition
     {
-        public string AccountUrl { get; set; }
-        public string InstrumentUrl { get; set; }
-        public string Symbol { get; set; }
-        public decimal Quantity { get; set; }
+        public Position Position { get; set; }
+        public Instrument Instrument { get; set; }
 
         public string GetInstrumentKey()
         {
-            return InstrumentUrl.Substring(38, 36);
+            return Position?.Instrument?.Substring(38, 36);
         }
     }
 }

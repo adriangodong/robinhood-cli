@@ -26,21 +26,20 @@ namespace RobinhoodCli.Commands
                 if (position.Quantity > 0)
                 {
                     var openPosition = new OpenPosition();
-                    openPosition.AccountUrl = position.Account;
-                    openPosition.InstrumentUrl = position.Instrument;
+                    openPosition.Position = position;
 
                     var instrumentResult = await client.Instrument(openPosition.GetInstrumentKey());
                     if (instrumentResult.IsSuccessStatusCode)
                     {
-                        openPosition.Symbol = instrumentResult.Data.Symbol;
-                        openPosition.Quantity = position.Quantity;
-                        openPositions.Add(openPosition);
+                        openPosition.Instrument = instrumentResult.Data;
                     }
                     else
                     {
                         context.ReplaceCommandQueueWithDisplayError(instrumentResult.Content);
                         return;
                     }
+
+                    openPositions.Add(openPosition);
                 }
             }
 
@@ -50,10 +49,11 @@ namespace RobinhoodCli.Commands
 
         internal void RenderOpenPositions(List<OpenPosition> openPositions)
         {
+            Console.WriteLine();
             Console.WriteLine("Open positions:");
             foreach (var openPosition in openPositions)
             {
-                Console.WriteLine($"{openPosition.Symbol}: {openPosition.Quantity}");
+                Console.WriteLine($"{openPosition.Instrument.Symbol}: {openPosition.Position.Quantity}");
             }
         }
 

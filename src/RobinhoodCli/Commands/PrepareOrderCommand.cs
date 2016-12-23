@@ -7,19 +7,30 @@ using RobinhoodCli.Models;
 
 namespace RobinhoodCli.Commands
 {
-    internal class PrepareOrderCommand : AuthenticationRequiredCommand
+    internal class PrepareOrderCommand : ActiveAccountRequiredCommand
     {
+
         public OrderType Type { get; set; }
         public string Symbol { get; set; }
         public decimal? Size { get; set; }
         public decimal? LimitPrice { get; set; }
 
-        public override async Task ExecuteWithAuthentication(
+        public override async Task ExecuteWithActiveAccount(
             IRobinhoodClient client,
             ExecutionContext context)
         {
 
-            string instrumentUrl = null;
+            var accountUrl = $"https://api.robinhood.com/accounts/{context.ActiveAccount.AccountNumber}/";
+            var newOrder = new NewOrder()
+            {
+                Account = accountUrl,
+                Symbol = Symbol.ToUpper(),
+                Side = Type == OrderType.Buy ? Side.Buy : Side.Sell,
+                TimeInForce = "gfd",
+                Trigger = "immediate",
+                Type = LimitPrice.HasValue ? "limit" : "market",
+            };
+
             if (!Size.HasValue)
             {
                 if (Type == OrderType.Buy)
@@ -31,7 +42,7 @@ namespace RobinhoodCli.Commands
                 {
                     // Get open position size from context
                     var openPosition = context.OpenPositions
-                        .FirstOrDefault(op => string.Equals(op.Symbol, Symbol, StringComparison.OrdinalIgnoreCase));
+                        .FirstOrDefault(op => string.Equals(op.Instrument.Symbol, Symbol, StringComparison.OrdinalIgnoreCase));
 
                     // Else get open position from API
                     if (openPosition == null)
@@ -40,8 +51,7 @@ namespace RobinhoodCli.Commands
                         return;
                     }
 
-                    Size = openPosition.Quantity;
-                    instrumentUrl = openPosition.InstrumentUrl;
+                    Size = openPosition.Position.Quantity;
                 }
             }
 
@@ -58,25 +68,12 @@ namespace RobinhoodCli.Commands
                 LimitPrice = quoteResult.Data.AskPrice;
             }
 
-            var accountUrl = $"https://api.robinhood.com/accounts/{context.ActiveAccount.AccountNumber}/";
-            var newOrder = CreateNewOrder(accountUrl, quoteResult.Data.Instrument);
+            newOrder.Instrument = quoteResult.Data.Instrument;
+            newOrder.Quantity = Size.Value;
+            newOrder.Price = LimitPrice.Value;
+
             context.CommandQueue.Enqueue(new ExecuteOrderCommand(newOrder));
         }
 
-        internal NewOrder CreateNewOrder(string accountUrl, string instrumentUrl)
-        {
-            return new NewOrder()
-            {
-                Account = accountUrl,
-                Instrument = instrumentUrl,
-                Symbol = Symbol.ToUpper(),
-                Side = Type == OrderType.Buy ? Side.Buy : Side.Sell,
-                TimeInForce = "gfd",
-                Trigger = "immediate",
-                Type = LimitPrice.HasValue ? "limit" : "market",
-                Price = LimitPrice.Value,
-                Quantity = Size.Value
-            };
-        }
     }
 }

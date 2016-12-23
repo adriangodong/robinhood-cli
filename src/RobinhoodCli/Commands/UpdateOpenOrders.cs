@@ -48,6 +48,7 @@ namespace RobinhoodCli.Commands
 
         internal void RenderOpenOrders(List<OpenOrder> openOrders)
         {
+            Console.WriteLine();
             Console.WriteLine("Open orders:");
             foreach (var openOrder in openOrders)
             {
