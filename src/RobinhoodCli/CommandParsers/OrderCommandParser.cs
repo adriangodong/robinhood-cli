@@ -29,7 +29,7 @@ namespace RobinhoodCli.CommandParsers
 
         public string LastError { get; private set; }
 
-        internal OrderCommand ParseCommandTokens(OrderType type, string[] commandTokens)
+        internal PrepareOrderCommand ParseCommandTokens(OrderType type, string[] commandTokens)
         {
             LastError = null;
 
@@ -39,7 +39,7 @@ namespace RobinhoodCli.CommandParsers
                 return null;
             }
 
-            var order = new OrderCommand
+            var prepareOrderCommand = new PrepareOrderCommand
             {
                 Type = type,
                 Symbol = commandTokens[1]
@@ -55,7 +55,7 @@ namespace RobinhoodCli.CommandParsers
 
                     case OrderType.Sell:
                         LastError = null;
-                        return order;
+                        return prepareOrderCommand;
 
                     default:
                         throw new NotImplementedException();
@@ -68,12 +68,12 @@ namespace RobinhoodCli.CommandParsers
                 LastError = string.Format(Error_BadSizeParameter, commandTokens[2]);
                 return null;
             }
-            order.Size = size;
+            prepareOrderCommand.Size = size;
 
             if (commandTokens.Length == 3)
             {
                 LastError = null;
-                return order;
+                return prepareOrderCommand;
             }
 
             decimal limitPrice;
@@ -82,9 +82,9 @@ namespace RobinhoodCli.CommandParsers
                 LastError = string.Format(Error_BadLimitPriceParameter, commandTokens[3]);
                 return null;
             }
-            order.LimitPrice = limitPrice;
+            prepareOrderCommand.LimitPrice = limitPrice;
 
-            return order;
+            return prepareOrderCommand;
         }
     }
 }

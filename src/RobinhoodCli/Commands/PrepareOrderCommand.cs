@@ -8,7 +8,7 @@ using RobinhoodCli.Models;
 
 namespace RobinhoodCli.Commands
 {
-    public class OrderCommand : ICommand
+    public class PrepareOrderCommand : ICommand
     {
         public OrderType Type { get; set; }
         public string Symbol { get; set; }
@@ -67,19 +67,7 @@ namespace RobinhoodCli.Commands
 
             var accountUrl = $"https://api.robinhood.com/accounts/{context.ActiveAccount.AccountNumber}/";
             var newOrder = CreateNewOrder(accountUrl, quoteResult.Data.Instrument);
-
-            Console.ForegroundColor = ConsoleColor.Green;
-            Console.WriteLine($"Sending order: {Type} {Symbol} - {Size} shares - ${LimitPrice} limit");
-            Console.ForegroundColor = ConsoleColor.Black;
-
-            var newOrderResult = await client.Orders(newOrder);
-
-            if (!newOrderResult.IsSuccessStatusCode)
-            {
-                return new ExecutionResult(newOrderResult.Content);
-            }
-
-            return ExecutionResult.NoResult;
+            return new PrepareOrderExecutionResult(newOrder);
         }
 
         internal NewOrder CreateNewOrder(string accountUrl, string instrumentUrl)

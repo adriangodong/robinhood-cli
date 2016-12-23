@@ -111,8 +111,8 @@ namespace RobinhoodCli.Tests.CommandParsers
         public void Parse_ShouldReturnBuyOrder_WithBuyTypeParameter()
         {
             // Act
-            var buyOrderCommand = commandParser.Parse(new[] { "buy", "hood", "1" }) as OrderCommand;
-            var bOrderCommand = commandParser.Parse(new[] { "b", "hood", "1" }) as OrderCommand;
+            var buyOrderCommand = commandParser.Parse(new[] { "buy", "hood", "1" }) as PrepareOrderCommand;
+            var bOrderCommand = commandParser.Parse(new[] { "b", "hood", "1" }) as PrepareOrderCommand;
 
             // Assert
             Assert.IsNotNull(buyOrderCommand);
@@ -130,8 +130,8 @@ namespace RobinhoodCli.Tests.CommandParsers
         public void Parse_ShouldReturnSellOrder_WithSellTypeParameter()
         {
             // Act
-            var sellOrderCommand = commandParser.Parse(new[] { "sell", "hood" }) as OrderCommand;
-            var sOrderCommand = commandParser.Parse(new[] { "s", "hood" }) as OrderCommand;
+            var sellOrderCommand = commandParser.Parse(new[] { "sell", "hood" }) as PrepareOrderCommand;
+            var sOrderCommand = commandParser.Parse(new[] { "s", "hood" }) as PrepareOrderCommand;
 
             // Assert
             Assert.IsNotNull(sellOrderCommand);
