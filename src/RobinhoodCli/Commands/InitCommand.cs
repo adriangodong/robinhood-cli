@@ -20,7 +20,8 @@ namespace RobinhoodCli.Commands
             IRobinhoodClient client,
             ExecutionContext context)
         {
-            Console.WriteLine("Robinhood CLI.");
+            Console.Clear();
+            Console.WriteLine("Welcome to Robinhood CLI.");
 
             if (!string.IsNullOrEmpty(AuthenticationToken))
             {

@@ -22,7 +22,7 @@ namespace RobinhoodCli.Commands
         {
             Console.ForegroundColor = ConsoleColor.Green;
             Console.WriteLine($"Sending order: {newOrder.Side} {newOrder.Symbol} - {newOrder.Quantity} shares - ${newOrder.Price} limit");
-            Console.ForegroundColor = ConsoleColor.Black;
+            Console.ResetColor();
 
             var newOrderResult = await client.Orders(newOrder);
 
