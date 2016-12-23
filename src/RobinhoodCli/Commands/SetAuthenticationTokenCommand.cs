@@ -24,7 +24,10 @@ namespace RobinhoodCli.Commands
             context.CommandQueue.Enqueue(new AccountCommand());
 
             // Show active account open positions
-            context.CommandQueue.Enqueue(new PositionsCommand());
+            context.CommandQueue.Enqueue(new UpdateOpenPositionsCommand());
+
+            // Show active account open orders
+            context.CommandQueue.Enqueue(new UpdateOpenOrdersCommand());
 
             return Task.CompletedTask;
         }

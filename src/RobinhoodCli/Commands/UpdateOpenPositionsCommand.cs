@@ -6,7 +6,7 @@ using RobinhoodCli.Models;
 
 namespace RobinhoodCli.Commands
 {
-    internal class PositionsCommand : ActiveAccountRequiredCommand
+    internal class UpdateOpenPositionsCommand : ActiveAccountRequiredCommand
     {
 
         public override async Task ExecuteWithActiveAccount(
