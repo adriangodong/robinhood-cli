@@ -28,6 +28,7 @@ namespace RobinhoodCli
             ExecutionContext = new ExecutionContext();
             ExecutionContext.CommandQueue.Enqueue(new InitCommand(configuration));
 
+            Console.Clear();
             while (true)
             {
                 ICommand commandToExecute;

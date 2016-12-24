@@ -9,18 +9,19 @@ namespace RobinhoodCli.Commands
     internal class InitCommand : ICommand
     {
 
+        public const string AuthenticationTokenConfigurationKey = "RobinhoodCli:AuthenticationToken";
+
         internal string AuthenticationToken { get; private set; }
 
         public InitCommand(IConfiguration configuration)
         {
-            AuthenticationToken = configuration["RobinhoodCli:AuthenticationToken"];
+            AuthenticationToken = configuration?[AuthenticationTokenConfigurationKey];
         }
 
         public Task Execute(
             IRobinhoodClient client,
             ExecutionContext context)
         {
-            Console.Clear();
             Console.WriteLine("Welcome to Robinhood CLI.");
             Console.WriteLine();
 
