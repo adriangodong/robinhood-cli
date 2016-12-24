@@ -10,7 +10,7 @@ namespace RobinhoodCli.Commands
     internal class PrepareOrderCommand : ActiveAccountRequiredCommand
     {
 
-        public OrderType Type { get; set; }
+        public Side Side { get; set; }
         public string Symbol { get; set; }
         public decimal? Size { get; set; }
         public decimal? LimitPrice { get; set; }
@@ -25,7 +25,7 @@ namespace RobinhoodCli.Commands
             {
                 Account = accountUrl,
                 Symbol = Symbol.ToUpper(),
-                Side = Type == OrderType.Buy ? Side.Buy : Side.Sell,
+                Side = Side,
                 TimeInForce = "gfd",
                 Trigger = "immediate",
                 Type = LimitPrice.HasValue ? "limit" : "market",
@@ -33,12 +33,12 @@ namespace RobinhoodCli.Commands
 
             if (!Size.HasValue)
             {
-                if (Type == OrderType.Buy)
+                if (Side == Side.Buy)
                 {
                     context.ReplaceCommandQueueWithDisplayError("Buy order without size.");
                     return;
                 }
-                if (Type == OrderType.Sell)
+                if (Side == Side.Sell)
                 {
                     // Get open position size from context
                     var openPosition = context.OpenPositions

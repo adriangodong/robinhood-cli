@@ -1,6 +1,6 @@
 using System;
+using Deadlock.Robinhood.Model;
 using RobinhoodCli.Commands;
-using RobinhoodCli.Models;
 
 namespace RobinhoodCli.CommandParsers
 {
@@ -19,11 +19,11 @@ namespace RobinhoodCli.CommandParsers
             {
                 case "buy":
                 case "b":
-                    return ParsePrepareOrderCommand(OrderType.Buy, commandTokens);
+                    return ParsePrepareOrderCommand(Side.Buy, commandTokens);
 
                 case "sell":
                 case "s":
-                    return ParsePrepareOrderCommand(OrderType.Sell, commandTokens);
+                    return ParsePrepareOrderCommand(Side.Sell, commandTokens);
 
                 case "cancel":
                     return ParseCancelOpenOrderCommand(commandTokens);
@@ -34,7 +34,7 @@ namespace RobinhoodCli.CommandParsers
 
         public string LastError { get; private set; }
 
-        internal PrepareOrderCommand ParsePrepareOrderCommand(OrderType type, string[] commandTokens)
+        internal PrepareOrderCommand ParsePrepareOrderCommand(Side side, string[] commandTokens)
         {
             LastError = null;
 
@@ -46,19 +46,19 @@ namespace RobinhoodCli.CommandParsers
 
             var prepareOrderCommand = new PrepareOrderCommand
             {
-                Type = type,
+                Side = side,
                 Symbol = commandTokens[1]
             };
 
             if (commandTokens.Length == 2)
             {
-                switch (type)
+                switch (side)
                 {
-                    case OrderType.Buy:
+                    case Side.Buy:
                         LastError = Error_EmptySizeParameter;
                         return null;
 
-                    case OrderType.Sell:
+                    case Side.Sell:
                         LastError = null;
                         return prepareOrderCommand;
 
