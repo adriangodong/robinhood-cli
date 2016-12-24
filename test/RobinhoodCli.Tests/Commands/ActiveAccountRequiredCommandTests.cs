@@ -22,6 +22,13 @@ namespace RobinhoodCli.Tests.Commands
         }
 
         [TestMethod]
+        public void DerivedFromAuthenticationRequiredCommand()
+        {
+            // Assert
+            Assert.IsNotNull(mockActiveAccountRequiredCommand.Object as AuthenticationRequiredCommand);
+        }
+
+        [TestMethod]
         public void ExecuteWithAuthentication_ShouldQueueDisplayError_WhenNoActiveAccount()
         {
             // Arrange

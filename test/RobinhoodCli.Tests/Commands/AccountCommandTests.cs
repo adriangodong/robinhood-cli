@@ -22,7 +22,7 @@ namespace RobinhoodCli.Tests.Commands
         }
 
         [TestMethod]
-        public void RequireAuthentication()
+        public void DerivedFromAuthenticationRequiredCommand()
         {
             // Arrange
             var accountCommand = new AccountCommand();
