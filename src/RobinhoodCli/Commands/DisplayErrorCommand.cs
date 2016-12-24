@@ -8,11 +8,11 @@ namespace RobinhoodCli.Commands
     internal class DisplayErrorCommand : ICommand
     {
 
-        private readonly string error;
+        internal string Error { get; private set; }
 
         public DisplayErrorCommand(string error)
         {
-            this.error = error;
+            Error = error;
         }
 
         public Task Execute(
@@ -20,7 +20,7 @@ namespace RobinhoodCli.Commands
             ExecutionContext context)
         {
             Console.ForegroundColor = ConsoleColor.DarkRed;
-            Console.WriteLine($"ERROR: {error}");
+            Console.WriteLine($"ERROR: {Error}");
             Console.WriteLine();
             Console.ResetColor();
 
