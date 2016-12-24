@@ -43,12 +43,12 @@ namespace RobinhoodCli.Tests.CommandParsers
         public void Parse_ShouldReturnNull_WithUnknownOrderType()
         {
             // Act
-            var order = commandParser.Parse("exit");
+            var order = commandParser.Parse("unknown");
 
             // Assert
             Assert.IsNull(order);
             Assert.AreEqual(
-                string.Format(CommandParser.Error_UnknownFirstToken, "exit"),
+                string.Format(CommandParser.Error_UnknownFirstToken, "unknown"),
                 commandParser.LastError);
         }
 

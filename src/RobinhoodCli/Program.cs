@@ -48,6 +48,7 @@ namespace RobinhoodCli
                 {
                     Console.ForegroundColor = ConsoleColor.DarkRed;
                     Console.WriteLine($"ERROR: {commandParser.LastError}");
+                    Console.WriteLine();
                     Console.ResetColor();
                 }
                 else

@@ -28,7 +28,7 @@ namespace RobinhoodCli.Commands
                     var openPosition = new OpenPosition();
                     openPosition.Position = position;
 
-                    var instrumentResult = await client.Instrument(openPosition.GetInstrumentKey());
+                    var instrumentResult = await client.Instrument(position.GetInstrumentKey());
                     if (instrumentResult.IsSuccessStatusCode)
                     {
                         openPosition.Instrument = instrumentResult.Data;

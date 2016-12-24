@@ -6,10 +6,5 @@ namespace RobinhoodCli.Models
     {
         public Position Position { get; set; }
         public Instrument Instrument { get; set; }
-
-        public string GetInstrumentKey()
-        {
-            return Position?.Instrument?.Substring(38, 36);
-        }
     }
 }
