@@ -10,7 +10,7 @@ namespace RobinhoodCli.Models
         public string AuthenticationToken { get; set; }
         public Account ActiveAccount { get; set; }
         public List<OpenPosition> OpenPositions { get; set; }
-        public List<OpenOrder> OpenOrders { get; private set; }
+        public List<OpenOrder> OpenOrders { get; internal set; }
         public Queue<ICommand> CommandQueue { get; private set; }
 
         public ExecutionContext()
