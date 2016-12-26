@@ -23,11 +23,14 @@ namespace RobinhoodCli.Commands
             context.ClearOpenOrders();
             foreach (var order in ordersResult.Data.Results)
             {
+                // TODO: better filter out orders (by account, include pending, etc)
+
                 if (order.State == "confirmed")
                 {
                     var instrumentResult = await client.Instrument(order.GetInstrumentKey());
                     if (!instrumentResult.IsSuccessStatusCode)
                     {
+                        // TODO: replace with warning
                         context.ReplaceCommandQueueWithDisplayError(instrumentResult.Content);
                         return;
                     }
