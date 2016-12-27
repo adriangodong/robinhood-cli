@@ -35,6 +35,7 @@ namespace RobinhoodCli.Commands
                     }
                     else
                     {
+                        // TODO: replace with warning
                         context.ReplaceCommandQueueWithDisplayError(instrumentResult.Content);
                         return;
                     }
@@ -43,6 +44,7 @@ namespace RobinhoodCli.Commands
                 }
             }
 
+            // TODO: make ExecutionContext.OpenPositions setter internal like OpenOrders.
             context.OpenPositions = openPositions;
             RenderOpenPositions(openPositions);
         }
