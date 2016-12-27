@@ -17,10 +17,11 @@ namespace RobinhoodCli.Commands
 
         public override async Task ExecuteWithActiveAccount(
             IRobinhoodClient client,
-            ExecutionContext context)
+            ExecutionContext context,
+            Account activeAccount)
         {
 
-            var accountUrl = $"https://api.robinhood.com/accounts/{context.ActiveAccount.AccountNumber}/";
+            var accountUrl = $"https://api.robinhood.com/accounts/{activeAccount.AccountNumber}/";
             var newOrder = new NewOrder()
             {
                 Account = accountUrl,

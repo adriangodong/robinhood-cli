@@ -48,7 +48,10 @@ namespace RobinhoodCli.Tests.Commands
             var executionContext = new ExecutionContext();
 
             // Act
-            await updateOpenOrdersCommand.ExecuteWithActiveAccount(mockRobinhoodClient.Object, executionContext);
+            await updateOpenOrdersCommand.ExecuteWithActiveAccount(
+                mockRobinhoodClient.Object,
+                executionContext,
+                new Account());
 
             // Assert
             Assert.AreEqual(1, executionContext.CommandQueue.Count);
@@ -95,7 +98,10 @@ namespace RobinhoodCli.Tests.Commands
             };
 
             // Act
-            await updateOpenOrdersCommand.ExecuteWithActiveAccount(mockRobinhoodClient.Object, executionContext);
+            await updateOpenOrdersCommand.ExecuteWithActiveAccount(
+                mockRobinhoodClient.Object,
+                executionContext,
+                new Account());
 
             // Assert
             Assert.AreEqual(1, executionContext.OpenOrders.Count);

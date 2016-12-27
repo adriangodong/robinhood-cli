@@ -1,5 +1,6 @@
 using System.Threading.Tasks;
 using Deadlock.Robinhood;
+using Deadlock.Robinhood.Model;
 using RobinhoodCli.Models;
 
 namespace RobinhoodCli.Commands
@@ -17,10 +18,10 @@ namespace RobinhoodCli.Commands
                 return Task.CompletedTask;
             }
 
-            return ExecuteWithActiveAccount(client, context);
+            return ExecuteWithActiveAccount(client, context, context.ActiveAccount);
         }
 
-        public abstract Task ExecuteWithActiveAccount(IRobinhoodClient client, ExecutionContext context);
+        public abstract Task ExecuteWithActiveAccount(IRobinhoodClient client, ExecutionContext context, Account activeAccount);
 
     }
 }

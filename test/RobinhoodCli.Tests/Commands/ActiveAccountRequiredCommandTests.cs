@@ -49,9 +49,10 @@ namespace RobinhoodCli.Tests.Commands
         public void ExecuteWithAuthentication_ShouldCallExecuteWithActiveAccount_WhenActiveAccountSet()
         {
             // Arrange
+            var account = new Account();
             var executionContext = new ExecutionContext()
             {
-                ActiveAccount = new Account()
+                ActiveAccount = account
             };
 
             // Act
@@ -60,7 +61,8 @@ namespace RobinhoodCli.Tests.Commands
             // Assert
             Assert.AreEqual(0, executionContext.CommandQueue.Count);
             mockActiveAccountRequiredCommand
-                .Verify(mock => mock.ExecuteWithActiveAccount(null, executionContext), Times.Once);
+                .Verify(mock => mock.ExecuteWithActiveAccount(
+                    null, executionContext, account), Times.Once);
         }
 
     }

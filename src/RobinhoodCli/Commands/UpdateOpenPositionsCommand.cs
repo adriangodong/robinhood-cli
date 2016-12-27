@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using Deadlock.Robinhood;
+using Deadlock.Robinhood.Model;
 using RobinhoodCli.Models;
 
 namespace RobinhoodCli.Commands
@@ -11,9 +12,10 @@ namespace RobinhoodCli.Commands
 
         public override async Task ExecuteWithActiveAccount(
             IRobinhoodClient client,
-            ExecutionContext context)
+            ExecutionContext context,
+            Account activeAccount)
         {
-            var positionResult = await client.Positions(context.ActiveAccount.AccountNumber);
+            var positionResult = await client.Positions(activeAccount.AccountNumber);
             if (!positionResult.IsSuccessStatusCode)
             {
                 context.ReplaceCommandQueueWithDisplayError(positionResult.Content);
