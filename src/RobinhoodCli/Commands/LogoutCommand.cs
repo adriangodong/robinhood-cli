@@ -2,6 +2,7 @@ using System;
 using System.Threading.Tasks;
 using Deadlock.Robinhood;
 using RobinhoodCli.Models;
+using RobinhoodCli.Services;
 
 namespace RobinhoodCli.Commands
 {
@@ -10,10 +11,11 @@ namespace RobinhoodCli.Commands
 
         public Task Execute(
             IRobinhoodClient client,
+            IOutputService output,
             ExecutionContext context)
         {
-            Console.WriteLine("You have been logged out.");
-            Console.WriteLine();
+            output.Info("You have been logged out.");
+            output.ExitCommand();
 
             context.CommandQueue.Enqueue(new SaveAuthenticationTokenCommand(null));
             context.CommandQueue.Enqueue(new SetAuthenticationTokenCommand(null));

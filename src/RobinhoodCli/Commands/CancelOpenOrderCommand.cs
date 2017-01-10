@@ -1,8 +1,8 @@
-using System;
 using System.Linq;
 using System.Threading.Tasks;
 using Deadlock.Robinhood;
 using RobinhoodCli.Models;
+using RobinhoodCli.Services;
 
 namespace RobinhoodCli.Commands
 {
@@ -18,26 +18,27 @@ namespace RobinhoodCli.Commands
 
         public override async Task ExecuteWithAuthentication(
             IRobinhoodClient client,
+            IOutputService output,
             ExecutionContext context)
         {
             var openOrder = context.OpenOrders.FirstOrDefault(oo => oo.Index == OpenOrderIndexToCancel);
 
             if (openOrder == null)
             {
-                context.ReplaceCommandQueueWithDisplayError($"Can't find open order index {OpenOrderIndexToCancel}");
+                output.Error($"Can't find open order index {OpenOrderIndexToCancel}");
                 return;
             }
 
-            Console.WriteLine($"Cancelling order {openOrder.Order.Id}...");
+            output.Info($"Cancelling order {openOrder.Order.Id}...");
             var cancelOrderResult = await client.CancelOrder(openOrder.Order.Id);
             if (!cancelOrderResult.IsSuccessStatusCode)
             {
-                context.ReplaceCommandQueueWithDisplayError(cancelOrderResult.Content);
+                output.Error(cancelOrderResult.Content);
                 return;
             }
 
-            Console.WriteLine($"Order cancelled.");
-            Console.WriteLine();
+            output.Info($"Order cancelled.");
+            output.ExitCommand();
             context.CommandQueue.Enqueue(new UpdateOpenOrdersCommand());
         }
 

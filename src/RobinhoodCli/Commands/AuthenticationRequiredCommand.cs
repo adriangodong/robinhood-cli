@@ -1,6 +1,7 @@
 using System.Threading.Tasks;
 using Deadlock.Robinhood;
 using RobinhoodCli.Models;
+using RobinhoodCli.Services;
 
 namespace RobinhoodCli.Commands
 {
@@ -9,18 +10,25 @@ namespace RobinhoodCli.Commands
 
         public const string Error_Unauthenticated = "Session is not authenticated. Use login command to authenticate.";
 
-        public Task Execute(IRobinhoodClient client, ExecutionContext context)
+        public Task Execute(
+            IRobinhoodClient client,
+            IOutputService output,
+            ExecutionContext context)
         {
             if (context.AuthenticationToken == null)
             {
-                context.ReplaceCommandQueueWithDisplayError(Error_Unauthenticated);
+                context.CommandQueue.Clear();
+                output.Error(Error_Unauthenticated);
                 return Task.CompletedTask;
             }
 
-            return ExecuteWithAuthentication(client, context);
+            return ExecuteWithAuthentication(client, output, context);
         }
 
-        public abstract Task ExecuteWithAuthentication(IRobinhoodClient client, ExecutionContext context);
+        public abstract Task ExecuteWithAuthentication(
+            IRobinhoodClient client,
+            IOutputService output,
+            ExecutionContext context);
 
     }
 }

@@ -1,17 +1,23 @@
-using System;
 using System.Threading.Tasks;
-using Deadlock.Robinhood;
-using Deadlock.Robinhood.Model;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
 using RobinhoodCli.Commands;
 using RobinhoodCli.Models;
+using RobinhoodCli.Services;
 
 namespace RobinhoodCli.Tests.Commands
 {
     [TestClass]
     public class LogoutCommandTests
     {
+
+        private Mock<IOutputService> mockOutputService;
+
+        [TestInitialize]
+        public void Init()
+        {
+            mockOutputService = new Mock<IOutputService>();
+        }
 
         [TestMethod]
         public async Task Execute_ShouldQueueSaveAuthenticationTokenCommandAndSetAuthenticationTokenCommand()
@@ -21,7 +27,10 @@ namespace RobinhoodCli.Tests.Commands
             var executionContext = new ExecutionContext();
 
             // Act
-            await logoutCommand.Execute(null, executionContext);
+            await logoutCommand.Execute(
+                null,
+                mockOutputService.Object,
+                executionContext);
 
             // Assert
             Assert.AreEqual(2, executionContext.CommandQueue.Count);

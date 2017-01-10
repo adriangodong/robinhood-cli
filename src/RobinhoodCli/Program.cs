@@ -5,6 +5,7 @@ using Deadlock.Robinhood;
 using RobinhoodCli.CommandParsers;
 using RobinhoodCli.Commands;
 using RobinhoodCli.Models;
+using RobinhoodCli.Services;
 
 namespace RobinhoodCli
 {
@@ -17,6 +18,7 @@ namespace RobinhoodCli
             new OrderCommandParser()
         });
 
+        private static IOutputService Output;
         private static ExecutionContext ExecutionContext;
 
         public static void Main(string[] args)
@@ -25,6 +27,7 @@ namespace RobinhoodCli
                 .AddJsonFile("config.json", true)
                 .Build();
 
+            Output = new ConsoleOutputService();
             ExecutionContext = new ExecutionContext();
             ExecutionContext.CommandQueue.Enqueue(new InitCommand(configuration));
 
@@ -56,7 +59,7 @@ namespace RobinhoodCli
                 {
                     using (IRobinhoodClient client = new RobinhoodClient(ExecutionContext.AuthenticationToken))
                     {
-                        commandToExecute.Execute(client, ExecutionContext).Wait();
+                        commandToExecute.Execute(client, Output, ExecutionContext).Wait();
                     }
                 }
             }

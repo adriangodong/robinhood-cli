@@ -1,6 +1,7 @@
 using System.Threading.Tasks;
 using Deadlock.Robinhood;
 using RobinhoodCli.Models;
+using RobinhoodCli.Services;
 
 namespace RobinhoodCli.Commands
 {
@@ -8,6 +9,7 @@ namespace RobinhoodCli.Commands
     {
         public Task Execute(
             IRobinhoodClient client,
+            IOutputService output,
             ExecutionContext context)
         {
             System.Environment.Exit(0);

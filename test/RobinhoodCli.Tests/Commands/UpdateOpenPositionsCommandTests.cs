@@ -7,6 +7,7 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
 using RobinhoodCli.Commands;
 using RobinhoodCli.Models;
+using RobinhoodCli.Services;
 
 namespace RobinhoodCli.Tests.Commands
 {
@@ -15,15 +16,17 @@ namespace RobinhoodCli.Tests.Commands
     {
 
         private Mock<IRobinhoodClient> mockRobinhoodClient;
+        private Mock<IOutputService> mockOutputService;
 
         [TestInitialize]
         public void Init()
         {
             mockRobinhoodClient = new Mock<IRobinhoodClient>();
+            mockOutputService = new Mock<IOutputService>();
         }
 
         [TestMethod]
-        public void DerivedFromAciveAccountRequiredCommand()
+        public void DerivedFromActiveAccountRequiredCommand()
         {
             // Arrange
             var updateOpenPositionsCommand = new UpdateOpenPositionsCommand();
@@ -50,15 +53,15 @@ namespace RobinhoodCli.Tests.Commands
             // Act
             await updateOpenPositionsCommand.ExecuteWithActiveAccount(
                 mockRobinhoodClient.Object,
+                mockOutputService.Object,
                 executionContext,
                 new Account());
 
             // Assert
-            Assert.AreEqual(1, executionContext.CommandQueue.Count);
-            Assert.IsNotNull(executionContext.CommandQueue.Peek() as DisplayErrorCommand);
-            Assert.AreEqual(
-                resultContent,
-                (executionContext.CommandQueue.Peek() as DisplayErrorCommand).Error);
+            Assert.AreEqual(0, executionContext.CommandQueue.Count);
+            mockOutputService.Verify(
+                mock => mock.Error(resultContent),
+                Times.Once);
         }
 
         [TestMethod]
@@ -100,6 +103,7 @@ namespace RobinhoodCli.Tests.Commands
             // Act
             await updateOpenPositionsCommand.ExecuteWithActiveAccount(
                 mockRobinhoodClient.Object,
+                mockOutputService.Object,
                 executionContext,
                 new Account());
 

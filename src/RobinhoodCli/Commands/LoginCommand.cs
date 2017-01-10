@@ -2,6 +2,7 @@ using System;
 using System.Threading.Tasks;
 using Deadlock.Robinhood;
 using RobinhoodCli.Models;
+using RobinhoodCli.Services;
 
 namespace RobinhoodCli.Commands
 {
@@ -21,17 +22,18 @@ namespace RobinhoodCli.Commands
 
         public async Task Execute(
             IRobinhoodClient client,
+            IOutputService output,
             ExecutionContext context)
         {
             var result = await client.Login(Username, Password);
             if (!result.IsSuccessStatusCode)
             {
-                context.ReplaceCommandQueueWithDisplayError($"Login failed: {result.Content}");
+                output.Error($"Login failed: {result.Content}");
                 return;
             }
 
-            Console.WriteLine("Login successful");
-            Console.WriteLine();
+            output.Info("Login successful");
+            output.ExitCommand();
             if (SaveAuthenticationToken)
             {
                 context.CommandQueue.Enqueue(new SaveAuthenticationTokenCommand(result.Data.Token));

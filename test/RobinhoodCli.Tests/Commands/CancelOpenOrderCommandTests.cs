@@ -6,6 +6,7 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
 using RobinhoodCli.Commands;
 using RobinhoodCli.Models;
+using RobinhoodCli.Services;
 
 namespace RobinhoodCli.Tests.Commands
 {
@@ -14,11 +15,13 @@ namespace RobinhoodCli.Tests.Commands
     {
 
         private Mock<IRobinhoodClient> mockRobinhoodClient;
+        private Mock<IOutputService> mockOutputService;
 
         [TestInitialize]
         public void Init()
         {
             mockRobinhoodClient = new Mock<IRobinhoodClient>();
+            mockOutputService = new Mock<IOutputService>();
         }
 
         [TestMethod]
@@ -39,12 +42,16 @@ namespace RobinhoodCli.Tests.Commands
             var executionContext = new ExecutionContext();
 
             // Act
-            await cancelOpenOrderCommand.ExecuteWithAuthentication(mockRobinhoodClient.Object, executionContext);
+            await cancelOpenOrderCommand.ExecuteWithAuthentication(
+                mockRobinhoodClient.Object,
+                mockOutputService.Object,
+                executionContext);
 
             // Assert
-            Assert.AreEqual(1, executionContext.CommandQueue.Count);
-            Assert.IsNotNull(executionContext.CommandQueue.Peek() as DisplayErrorCommand);
-            // TODO: assert error message
+            Assert.AreEqual(0, executionContext.CommandQueue.Count);
+            mockOutputService.Verify(
+                mock => mock.Error(It.IsAny<string>()), // TODO: assert actual error message
+                Times.Once);
         }
 
         [TestMethod]
@@ -73,12 +80,16 @@ namespace RobinhoodCli.Tests.Commands
             };
 
             // Act
-            await cancelOpenOrderCommand.ExecuteWithAuthentication(mockRobinhoodClient.Object, executionContext);
+            await cancelOpenOrderCommand.ExecuteWithAuthentication(
+                mockRobinhoodClient.Object,
+                mockOutputService.Object,
+                executionContext);
 
             // Assert
-            Assert.AreEqual(1, executionContext.CommandQueue.Count);
-            Assert.IsNotNull(executionContext.CommandQueue.Peek() as DisplayErrorCommand);
-            // TODO: assert error message
+            Assert.AreEqual(0, executionContext.CommandQueue.Count);
+            mockOutputService.Verify(
+                mock => mock.Error(It.IsAny<string>()), // TODO: assert actual error message
+                Times.Once);
         }
 
         [TestMethod]
@@ -107,11 +118,15 @@ namespace RobinhoodCli.Tests.Commands
             };
 
             // Act
-            await cancelOpenOrderCommand.ExecuteWithAuthentication(mockRobinhoodClient.Object, executionContext);
+            await cancelOpenOrderCommand.ExecuteWithAuthentication(
+                mockRobinhoodClient.Object,
+                mockOutputService.Object,
+                executionContext);
 
             // Assert
             Assert.AreEqual(1, executionContext.CommandQueue.Count);
             Assert.IsNotNull(executionContext.CommandQueue.Peek() as UpdateOpenOrdersCommand);
+            // TODO: assert info message
         }
 
     }

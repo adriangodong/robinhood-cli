@@ -4,6 +4,7 @@ using System.Threading.Tasks;
 using Deadlock.Robinhood;
 using Deadlock.Robinhood.Model;
 using RobinhoodCli.Models;
+using RobinhoodCli.Services;
 
 namespace RobinhoodCli.Commands
 {
@@ -12,13 +13,14 @@ namespace RobinhoodCli.Commands
 
         public override async Task ExecuteWithActiveAccount(
             IRobinhoodClient client,
+            IOutputService output,
             ExecutionContext context,
             Account activeAccount)
         {
             var positionResult = await client.Positions(activeAccount.AccountNumber);
             if (!positionResult.IsSuccessStatusCode)
             {
-                context.ReplaceCommandQueueWithDisplayError(positionResult.Content);
+                output.Error(positionResult.Content);
                 return;
             }
 
@@ -38,7 +40,7 @@ namespace RobinhoodCli.Commands
                     else
                     {
                         // TODO: replace with warning
-                        context.ReplaceCommandQueueWithDisplayError(instrumentResult.Content);
+                        output.Error(instrumentResult.Content);
                         return;
                     }
 
@@ -48,17 +50,17 @@ namespace RobinhoodCli.Commands
 
             // TODO: make ExecutionContext.OpenPositions setter internal like OpenOrders.
             context.OpenPositions = openPositions;
-            RenderOpenPositions(openPositions);
+            RenderOpenPositions(output, openPositions);
         }
 
-        internal void RenderOpenPositions(List<OpenPosition> openPositions)
+        internal void RenderOpenPositions(IOutputService output, List<OpenPosition> openPositions)
         {
-            Console.WriteLine("Open positions:");
+            output.Info("Open positions:");
             foreach (var openPosition in openPositions)
             {
-                Console.WriteLine($"{openPosition.Instrument.Symbol}: {openPosition.Position.Quantity}");
+                output.Info($"{openPosition.Instrument.Symbol}: {openPosition.Position.Quantity}");
             }
-            Console.WriteLine();
+            output.ExitCommand();
         }
 
     }

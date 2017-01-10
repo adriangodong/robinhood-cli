@@ -4,6 +4,7 @@ using System.Threading.Tasks;
 using Deadlock.Robinhood;
 using Deadlock.Robinhood.Model;
 using RobinhoodCli.Models;
+using RobinhoodCli.Services;
 
 namespace RobinhoodCli.Commands
 {
@@ -12,13 +13,14 @@ namespace RobinhoodCli.Commands
 
         public override async Task ExecuteWithActiveAccount(
             IRobinhoodClient client,
+            IOutputService output,
             ExecutionContext context,
             Account activeAccount)
         {
             var ordersResult = await client.Orders();
             if (!ordersResult.IsSuccessStatusCode)
             {
-                context.ReplaceCommandQueueWithDisplayError(ordersResult.Content);
+                output.Error(ordersResult.Content);
                 return;
             }
 
@@ -33,7 +35,7 @@ namespace RobinhoodCli.Commands
                     if (!instrumentResult.IsSuccessStatusCode)
                     {
                         // TODO: replace with warning
-                        context.ReplaceCommandQueueWithDisplayError(instrumentResult.Content);
+                        output.Error(instrumentResult.Content);
                         return;
                     }
 
@@ -41,17 +43,17 @@ namespace RobinhoodCli.Commands
                 }
             }
 
-            RenderOpenOrders(context.OpenOrders);
+            RenderOpenOrders(output, context.OpenOrders);
         }
 
-        internal void RenderOpenOrders(List<OpenOrder> openOrders)
+        internal void RenderOpenOrders(IOutputService output, List<OpenOrder> openOrders)
         {
-            Console.WriteLine("Open orders:");
+            output.Info("Open orders:");
             foreach (var openOrder in openOrders)
             {
-                Console.WriteLine($"[{openOrder.Index}] {openOrder.Order.Side} {openOrder.Instrument.Symbol} {openOrder.Order.Quantity} {openOrder.Order.Price}");
+                output.Info($"[{openOrder.Index}] {openOrder.Order.Side} {openOrder.Instrument.Symbol} {openOrder.Order.Quantity} {openOrder.Order.Price}");
             }
-            Console.WriteLine();
+            output.ExitCommand();
         }
 
     }

@@ -19,12 +19,6 @@ namespace RobinhoodCli.Models
             OpenOrders = new List<OpenOrder>();
         }
 
-        public void ReplaceCommandQueueWithDisplayError(string error)
-        {
-            CommandQueue.Clear();
-            CommandQueue.Enqueue(new DisplayErrorCommand(error));
-        }
-
         public void AddOpenOrder(Order order, Instrument instrument)
         {
             OpenOrders.Add(new OpenOrder()

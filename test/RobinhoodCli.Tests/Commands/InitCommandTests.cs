@@ -5,12 +5,21 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
 using RobinhoodCli.Commands;
 using RobinhoodCli.Models;
+using RobinhoodCli.Services;
 
 namespace RobinhoodCli.Tests.Commands
 {
     [TestClass]
     public class InitCommandTests
     {
+
+        private Mock<IOutputService> mockOutputService;
+
+        [TestInitialize]
+        public void Init()
+        {
+            mockOutputService = new Mock<IOutputService>();
+        }
 
         [TestMethod]
         public async Task Execute_ShouldNotQueueSetAuthenticationTokenCommand_WhenAuthenticationTokenNotFound()
@@ -20,7 +29,10 @@ namespace RobinhoodCli.Tests.Commands
             var executionContext = new ExecutionContext();
 
             // Act
-            await initCommand.Execute(null, executionContext);
+            await initCommand.Execute(
+                null,
+                mockOutputService.Object,
+                executionContext);
 
             // Assert
             Assert.AreEqual(0, executionContext.CommandQueue.Count);
@@ -40,7 +52,10 @@ namespace RobinhoodCli.Tests.Commands
             var executionContext = new ExecutionContext();
 
             // Act
-            await initCommand.Execute(null, executionContext);
+            await initCommand.Execute(
+                null,
+                mockOutputService.Object,
+                executionContext);
 
             // Assert
             Assert.AreEqual(1, executionContext.CommandQueue.Count);

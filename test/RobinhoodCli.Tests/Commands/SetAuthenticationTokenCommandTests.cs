@@ -20,7 +20,7 @@ namespace RobinhoodCli.Tests.Commands
             var executionContext = new ExecutionContext();
 
             // Act
-            await setAuthenticationTokenCommand.Execute(null, executionContext);
+            await setAuthenticationTokenCommand.Execute(null, null, executionContext);
 
             // Assert
             Assert.AreEqual(authenticationToken, executionContext.AuthenticationToken);
@@ -37,7 +37,7 @@ namespace RobinhoodCli.Tests.Commands
             };
 
             // Act
-            await setAuthenticationTokenCommand.Execute(null, executionContext);
+            await setAuthenticationTokenCommand.Execute(null, null, executionContext);
 
             // Assert
             Assert.IsNull(executionContext.ActiveAccount);
@@ -52,7 +52,7 @@ namespace RobinhoodCli.Tests.Commands
             var executionContext = new ExecutionContext();
 
             // Act
-            await setAuthenticationTokenCommand.Execute(null, executionContext);
+            await setAuthenticationTokenCommand.Execute(null, null, executionContext);
 
             // Assert
             Assert.AreEqual(3, executionContext.CommandQueue.Count);

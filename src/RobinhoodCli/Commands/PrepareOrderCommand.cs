@@ -4,6 +4,7 @@ using System.Threading.Tasks;
 using Deadlock.Robinhood.Model;
 using Deadlock.Robinhood;
 using RobinhoodCli.Models;
+using RobinhoodCli.Services;
 
 namespace RobinhoodCli.Commands
 {
@@ -17,6 +18,7 @@ namespace RobinhoodCli.Commands
 
         public override async Task ExecuteWithActiveAccount(
             IRobinhoodClient client,
+            IOutputService output,
             ExecutionContext context,
             Account activeAccount)
         {
@@ -36,7 +38,7 @@ namespace RobinhoodCli.Commands
             {
                 if (Side == Side.Buy)
                 {
-                    context.ReplaceCommandQueueWithDisplayError("Buy order without size.");
+                    output.Error("Buy order without size.");
                     return;
                 }
                 if (Side == Side.Sell)
@@ -48,7 +50,7 @@ namespace RobinhoodCli.Commands
                     // Else get open position from API
                     if (openPosition == null)
                     {
-                        context.ReplaceCommandQueueWithDisplayError("Can't find open position to sell. TODO");
+                        output.Error("Can't find open position to sell. TODO");
                         return;
                     }
 
@@ -59,7 +61,7 @@ namespace RobinhoodCli.Commands
             var quoteResult = await client.Quote(Symbol);
             if (!quoteResult.IsSuccessStatusCode)
             {
-                context.ReplaceCommandQueueWithDisplayError("Failed to get quote for market order.");
+                output.Error("Failed to get quote for market order.");
                 return;
             }
 

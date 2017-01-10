@@ -1,8 +1,8 @@
-using System;
 using System.Linq;
 using System.Threading.Tasks;
 using Deadlock.Robinhood;
 using RobinhoodCli.Models;
+using RobinhoodCli.Services;
 
 namespace RobinhoodCli.Commands
 {
@@ -11,25 +11,28 @@ namespace RobinhoodCli.Commands
 
         public override async Task ExecuteWithAuthentication(
             IRobinhoodClient client,
+            IOutputService output,
             ExecutionContext context)
         {
             var result = await client.Accounts();
             if (!result.IsSuccessStatusCode)
             {
-                context.ReplaceCommandQueueWithDisplayError($"Account listing failed: {result.Content}");
+                context.CommandQueue.Clear();
+                output.Error($"Account listing failed: {result.Content}");
                 return;
             }
 
             var activeAccount = result.Data.Results.FirstOrDefault(account => !account.Deactivated);
             if (activeAccount == null)
             {
-                context.ReplaceCommandQueueWithDisplayError($"No active account found");
+                context.CommandQueue.Clear();
+                output.Error($"No active account found");
                 return;
             }
 
             context.ActiveAccount = activeAccount;
-            Console.WriteLine($"Active account is {activeAccount.AccountNumber}");
-            Console.WriteLine();
+            output.Info($"Active account is {activeAccount.AccountNumber}");
+            output.ExitCommand();
         }
 
     }

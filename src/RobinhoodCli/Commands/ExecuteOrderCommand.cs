@@ -1,8 +1,8 @@
-using System;
 using System.Threading.Tasks;
 using Deadlock.Robinhood.Model;
 using Deadlock.Robinhood;
 using RobinhoodCli.Models;
+using RobinhoodCli.Services;
 
 namespace RobinhoodCli.Commands
 {
@@ -18,22 +18,21 @@ namespace RobinhoodCli.Commands
 
         public override async Task ExecuteWithAuthentication(
             IRobinhoodClient client,
+            IOutputService output,
             ExecutionContext context)
         {
-            Console.ForegroundColor = ConsoleColor.Green;
-            Console.WriteLine($"Sending order: {newOrder.Side} {newOrder.Symbol} - {newOrder.Quantity} shares - ${newOrder.Price} limit");
-            Console.ResetColor();
+            output.Success($"Sending order: {newOrder.Side} {newOrder.Symbol} - {newOrder.Quantity} shares - ${newOrder.Price} limit");
 
             var newOrderResult = await client.Orders(newOrder);
 
             if (!newOrderResult.IsSuccessStatusCode)
             {
-                context.ReplaceCommandQueueWithDisplayError(newOrderResult.Content);
+                output.Error(newOrderResult.Content);
                 return;
             }
 
-            Console.WriteLine("Order placed!");
-            Console.WriteLine();
+            output.Info("Order placed!");
+            output.ExitCommand();
             context.CommandQueue.Enqueue(new UpdateOpenOrdersCommand());
         }
 

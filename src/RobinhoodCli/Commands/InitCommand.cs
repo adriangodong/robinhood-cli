@@ -1,8 +1,8 @@
-using System;
 using System.Threading.Tasks;
 using Microsoft.Extensions.Configuration;
 using Deadlock.Robinhood;
 using RobinhoodCli.Models;
+using RobinhoodCli.Services;
 
 namespace RobinhoodCli.Commands
 {
@@ -20,16 +20,17 @@ namespace RobinhoodCli.Commands
 
         public Task Execute(
             IRobinhoodClient client,
+            IOutputService output,
             ExecutionContext context)
         {
-            Console.WriteLine("Welcome to Robinhood CLI.");
-            Console.WriteLine();
+            output.Info("Welcome to Robinhood CLI.");
 
             if (!string.IsNullOrEmpty(AuthenticationToken))
             {
                 context.CommandQueue.Enqueue(new SetAuthenticationTokenCommand(AuthenticationToken));
             }
 
+            output.ExitCommand();
             return Task.CompletedTask;
         }
 
