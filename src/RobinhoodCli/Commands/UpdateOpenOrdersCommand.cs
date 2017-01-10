@@ -1,5 +1,3 @@
-using System;
-using System.Collections.Generic;
 using System.Threading.Tasks;
 using Deadlock.Robinhood;
 using Deadlock.Robinhood.Model;
@@ -43,16 +41,7 @@ namespace RobinhoodCli.Commands
                 }
             }
 
-            RenderOpenOrders(output, context.OpenOrders);
-        }
-
-        internal void RenderOpenOrders(IOutputService output, List<OpenOrder> openOrders)
-        {
-            output.Info("Open orders:");
-            foreach (var openOrder in openOrders)
-            {
-                output.Info($"[{openOrder.Index}] {openOrder.Order.Side} {openOrder.Instrument.Symbol} {openOrder.Order.Quantity} {openOrder.Order.Price}");
-            }
+            output.OpenOrders(context.OpenOrders);
             output.ExitCommand();
         }
 

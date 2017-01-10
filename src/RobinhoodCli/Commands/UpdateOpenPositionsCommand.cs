@@ -1,4 +1,3 @@
-using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using Deadlock.Robinhood;
@@ -50,16 +49,7 @@ namespace RobinhoodCli.Commands
 
             // TODO: make ExecutionContext.OpenPositions setter internal like OpenOrders.
             context.OpenPositions = openPositions;
-            RenderOpenPositions(output, openPositions);
-        }
-
-        internal void RenderOpenPositions(IOutputService output, List<OpenPosition> openPositions)
-        {
-            output.Info("Open positions:");
-            foreach (var openPosition in openPositions)
-            {
-                output.Info($"{openPosition.Instrument.Symbol}: {openPosition.Position.Quantity}");
-            }
+            output.OpenPositions(openPositions);
             output.ExitCommand();
         }
 
