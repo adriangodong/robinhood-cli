@@ -24,6 +24,8 @@ namespace RobinhoodCli.Commands
             ExecutionContext context)
         {
             output.Info("Welcome to Robinhood CLI.");
+            output.Info("Command list can be found at:");
+            output.Info("https://github.com/adriangodong/robinhood-cli/blob/master/readme.md#usage--commands");
 
             if (!string.IsNullOrEmpty(AuthenticationToken))
             {
