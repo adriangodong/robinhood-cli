@@ -9,6 +9,9 @@ namespace RobinhoodCli.Commands
     internal class AccountCommand : AuthenticationRequiredCommand
     {
 
+        public const string Error_AccountsFailed = "Account listing failed.";
+        public const string Error_NoActiveAccountFound = "No active account found.";
+
         public override async Task ExecuteWithAuthentication(
             IRobinhoodClient client,
             IOutputService output,
@@ -18,7 +21,7 @@ namespace RobinhoodCli.Commands
             if (!result.IsSuccessStatusCode)
             {
                 context.CommandQueue.Clear();
-                output.Error($"Account listing failed: {result.Content}");
+                output.ErrorWithContent(Error_AccountsFailed, result.Content);
                 return;
             }
 
@@ -26,12 +29,12 @@ namespace RobinhoodCli.Commands
             if (activeAccount == null)
             {
                 context.CommandQueue.Clear();
-                output.Error($"No active account found");
+                output.Error(Error_NoActiveAccountFound);
                 return;
             }
 
             context.ActiveAccount = activeAccount;
-            output.Info($"Active account is {activeAccount.AccountNumber}");
+            output.Success($"Active account is {activeAccount.AccountNumber}");
             output.ExitCommand();
         }
 

@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using Deadlock.Robinhood;
@@ -38,10 +39,15 @@ namespace RobinhoodCli.Tests.Commands
         public async Task ExecuteWithAuthentication_ShouldQueueDisplayError_WhenAccountsCallFail()
         {
             // Arrange
+            var resultContent = Guid.NewGuid().ToString("N");
             var accountCommand = new AccountCommand();
             mockRobinhoodClient
                 .Setup(mock => mock.Accounts())
-                .ReturnsAsync(new Result<Page<Account>>() { IsSuccessStatusCode = false });
+                .ReturnsAsync(new Result<Page<Account>>()
+                {
+                    Content = resultContent,
+                    IsSuccessStatusCode = false
+                });
             var executionContext = new ExecutionContext();
 
             // Act
@@ -53,7 +59,7 @@ namespace RobinhoodCli.Tests.Commands
             // Assert
             Assert.AreEqual(0, executionContext.CommandQueue.Count);
             mockOutputService.Verify(
-                mock => mock.Error(It.IsAny<string>()), // TODO: assert actual error message
+                mock => mock.ErrorWithContent(AccountCommand.Error_AccountsFailed, resultContent),
                 Times.Once);
         }
 
@@ -78,7 +84,7 @@ namespace RobinhoodCli.Tests.Commands
                             inactiveAccount
                         }
                     }
-            });
+                });
             var executionContext = new ExecutionContext();
 
             // Act
@@ -90,7 +96,7 @@ namespace RobinhoodCli.Tests.Commands
             // Assert
             Assert.AreEqual(0, executionContext.CommandQueue.Count);
             mockOutputService.Verify(
-                mock => mock.Error(It.IsAny<string>()), // TODO: assert actual error message
+                mock => mock.Error(AccountCommand.Error_NoActiveAccountFound),
                 Times.Once);
         }
 

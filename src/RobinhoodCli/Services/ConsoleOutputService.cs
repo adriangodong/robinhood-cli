@@ -26,6 +26,15 @@ namespace RobinhoodCli.Services
             Console.ResetColor();
         }
 
+        public void ErrorWithContent(string message, string content)
+        {
+            Console.ForegroundColor = ConsoleColor.DarkRed;
+            Console.WriteLine($"ERROR: {message}");
+            Console.WriteLine(content);
+            Console.WriteLine();
+            Console.ResetColor();
+        }
+
         public void OpenOrders(List<OpenOrder> openOrders)
         {
             Console.WriteLine("Open orders:");
