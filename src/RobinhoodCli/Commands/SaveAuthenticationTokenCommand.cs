@@ -30,8 +30,8 @@ namespace RobinhoodCli.Commands
             });
 
             System.IO.File.WriteAllText($"{AppContext.BaseDirectory}\\config.json", configJson);
-            Console.WriteLine("Authentication saved in config.json.");
-            Console.WriteLine();
+            output.Info("Authentication saved in config.json.");
+            output.ExitCommand();
 
             return Task.CompletedTask;
         }
