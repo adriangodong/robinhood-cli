@@ -19,7 +19,7 @@ Clone the repository and the submodule using the following command:
 Build and run using the following command:
 
     cd robinhood-cli
-    dotnet restore && dotnet run --project src/RobinhoodCli
+    dotnet restore && dotnet run --project src/RobinhoodCli/RobinhoodCli.csproj
 
 ## Usage / Commands
 
