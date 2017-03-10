@@ -10,7 +10,7 @@ This application is for educational purposes only, provided as-is, and without a
 
 ## Running the CLI
 
-You need .NET Core 1.1 SDK, Preview 2. If you don't know what this is, stop and use the official Robinhood app instead.
+You need .NET Core 1.1.1 SDK. If you don't know what this is, stop and use the official Robinhood app instead.
 
 Clone the repository and the submodule using the following command:
 
