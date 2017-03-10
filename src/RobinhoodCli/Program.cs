@@ -9,7 +9,7 @@ using RobinhoodCli.Services;
 
 namespace RobinhoodCli
 {
-    public class Program
+    class Program
     {
 
         private static CommandParser commandParser = new CommandParser(new List<ICommandParser>() {
@@ -21,7 +21,7 @@ namespace RobinhoodCli
         private static IOutputService Output;
         private static ExecutionContext ExecutionContext;
 
-        public static void Main(string[] args)
+        static void Main(string[] args)
         {
             var configuration = new ConfigurationBuilder()
                 .AddJsonFile("config.json", true)
