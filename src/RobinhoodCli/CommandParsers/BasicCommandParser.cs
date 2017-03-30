@@ -9,6 +9,8 @@ namespace RobinhoodCli.CommandParsers
         {
             switch (commandTokens[0])
             {
+                case "account":
+                    return new AccountCommand();
                 case "positions":
                     return new UpdateOpenPositionsCommand();
                 case "orders":

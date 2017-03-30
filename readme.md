@@ -75,6 +75,10 @@ Example: Cancel the first order in the list
 
 ### Other commands
 
+    account
+
+Update and show current active account.
+
     positions
 
 Update and show current open positions.

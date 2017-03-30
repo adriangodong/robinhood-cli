@@ -35,6 +35,7 @@ namespace RobinhoodCli.Commands
 
             context.ActiveAccount = activeAccount;
             output.Success($"Active account is {activeAccount.AccountNumber}");
+            output.Info($"Available cash: ${activeAccount.Cash}");
             output.ExitCommand();
         }
 
