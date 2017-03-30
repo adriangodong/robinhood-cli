@@ -28,6 +28,14 @@ Build and run using the following command:
     login username password [--save]
     - --save: optional switch parameter to save login for future runs
 
+### Get a quote
+
+    quote|q symbol
+
+Example: Get a quote for MSFT
+
+    quote msft
+
 ### Place an order
 
     buy|b|sell|s symbol [size] [limit price]

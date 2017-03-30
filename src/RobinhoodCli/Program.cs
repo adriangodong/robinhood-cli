@@ -15,7 +15,8 @@ namespace RobinhoodCli
         private static CommandParser commandParser = new CommandParser(new List<ICommandParser>() {
             new BasicCommandParser(),
             new LoginCommandParser(),
-            new OrderCommandParser()
+            new OrderCommandParser(),
+            new QuoteCommandParser()
         });
 
         private static IOutputService Output;
