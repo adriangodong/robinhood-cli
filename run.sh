@@ -1,0 +1,1 @@
+dotnet restore && dotnet run --project src/RobinhoodCli/RobinhoodCli.csproj
