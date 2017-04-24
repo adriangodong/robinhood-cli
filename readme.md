@@ -67,9 +67,9 @@ They will create a market sell order for MSFT, order size is equal to open share
 
 ### Cancel an open order
 
-    cancel order-index
+    cancel (order-index)
 
-Cancel an open order at order-index position. You can retrieve open orders using the `orders` command.
+Cancel an open order at `order-index` position. You can retrieve open orders using the `orders` command.
 
 Example: Cancel the first order in the list
 
