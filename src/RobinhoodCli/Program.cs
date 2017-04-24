@@ -32,7 +32,16 @@ namespace RobinhoodCli
             ExecutionContext = new ExecutionContext();
             ExecutionContext.CommandQueue.Enqueue(new InitCommand(configuration));
 
-            Console.Clear();
+            try
+            {
+                Console.Clear();
+            }
+            catch(System.IO.IOException)
+            {
+                // Ignore exception when output is redirected.
+                // This is a known issue and workaround.
+            }
+
             while (true)
             {
                 ICommand commandToExecute;
