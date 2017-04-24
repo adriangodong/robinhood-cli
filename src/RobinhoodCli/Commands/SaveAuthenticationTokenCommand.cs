@@ -28,9 +28,10 @@ namespace RobinhoodCli.Commands
                     authenticationToken = AuthenticationToken
                 }
             });
+            var configJsonPath = $"{AppContext.BaseDirectory}{System.IO.Path.DirectorySeparatorChar}config.json";
 
-            System.IO.File.WriteAllText($"{AppContext.BaseDirectory}{System.IO.Path.PathSeparator}config.json", configJson);
-            output.Info($"Authentication saved in config.json.");
+            System.IO.File.WriteAllText(configJsonPath, configJson);
+            output.Info($"Authentication saved in ${configJsonPath}.");
             output.ExitCommand();
 
             return Task.CompletedTask;
