@@ -36,6 +36,10 @@ namespace RobinhoodCli.Commands
             context.ActiveAccount = activeAccount;
             output.Success($"Active account is {activeAccount.AccountNumber}");
             output.Info($"Available cash: ${activeAccount.Cash}");
+            output.Info($"Withdrawable cash: ${activeAccount.CashAvailableForWithdrawal}");
+            output.Info($"Uncleared deposits: ${activeAccount.UnclearedDeposits}");
+            output.Info($"Unsettled funds: ${activeAccount.UnsettledFunds}");
+            output.Info($"Buying power: ${activeAccount.Cash + activeAccount.UnsettledFunds}");
             output.ExitCommand();
         }
 
