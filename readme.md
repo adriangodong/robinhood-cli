@@ -4,13 +4,21 @@
 
 [![Build status](https://ci.appveyor.com/api/projects/status/hed8j6vdhog1d9al/branch/master?svg=true)](https://ci.appveyor.com/project/adriangodong/robinhood-cli-9hirg/branch/master)
 
-[ ![Download](https://api.bintray.com/packages/adriangodong/robinhood-cli/robinhood-cli-any/images/download.svg) ](https://bintray.com/adriangodong/robinhood-cli/robinhood-cli-any/_latestVersion)
+[![Download](https://api.bintray.com/packages/adriangodong/robinhood-cli/robinhood-cli-any/images/download.svg)](https://bintray.com/adriangodong/robinhood-cli/robinhood-cli-any/_latestVersion)
 
 **REAL DATA IS RECEIVED AND SENT TO THE ACTUAL ROBINHOOD API.**
 
 This application is for educational purposes only, provided as-is, and without any warranty. It may not work and it may cause irreversible damage to your account. Use it at your own risk.
 
 ## Running the CLI
+
+### From compiled archive
+
+0. Download and install [.NET Core 1.1.1 runtime](https://www.microsoft.com/net/download/core#/runtime) for your platform
+1. Use the following [download link](https://bintray.com/adriangodong/robinhood-cli/robinhood-cli-any/_latestVersion) to get the latest ZIP file.
+2. Unzip the file and run the following command `dotnet RobinhoodCli.dll`
+
+### From source
 
 You need .NET Core 1.1.1 SDK. If you don't know what this is, stop and use the official Robinhood app instead.
 
