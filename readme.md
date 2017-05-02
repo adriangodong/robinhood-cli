@@ -4,6 +4,8 @@
 
 [![Build status](https://ci.appveyor.com/api/projects/status/hed8j6vdhog1d9al/branch/master?svg=true)](https://ci.appveyor.com/project/adriangodong/robinhood-cli-9hirg/branch/master)
 
+[ ![Download](https://api.bintray.com/packages/adriangodong/robinhood-cli/robinhood-cli-any/images/download.svg) ](https://bintray.com/adriangodong/robinhood-cli/robinhood-cli-any/_latestVersion)
+
 **REAL DATA IS RECEIVED AND SENT TO THE ACTUAL ROBINHOOD API.**
 
 This application is for educational purposes only, provided as-is, and without any warranty. It may not work and it may cause irreversible damage to your account. Use it at your own risk.
