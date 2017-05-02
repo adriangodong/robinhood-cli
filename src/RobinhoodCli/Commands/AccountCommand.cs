@@ -35,7 +35,7 @@ namespace RobinhoodCli.Commands
 
             context.ActiveAccount = activeAccount;
             output.Success($"Active account is {activeAccount.AccountNumber}");
-            output.Info($"Buying power: ${activeAccount.MarginBalances?.OvernightBuyingPower}");
+            output.Info($"Buying power: ${activeAccount.MarginBalances?.OvernightBuyingPower ?? activeAccount.CashBalances?.BuyingPower}");
             output.ExitCommand();
         }
 
