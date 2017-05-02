@@ -15,30 +15,37 @@ namespace RobinhoodCli.Commands
             ExecutionContext context,
             Account activeAccount)
         {
-            var ordersResult = await client.Orders();
-            if (!ordersResult.IsSuccessStatusCode)
-            {
-                output.Error(ordersResult.Content);
-                return;
-            }
-
             context.ClearOpenOrders();
-            foreach (var order in ordersResult.Data.Results)
+
+            var ordersResult = await client.Orders();
+            while (ordersResult != null)
             {
-                // TODO: better filter out orders (by account, include pending, etc)
-
-                if (order.State == "confirmed")
+                if (!ordersResult.IsSuccessStatusCode)
                 {
-                    var instrumentResult = await client.Instrument(order.GetInstrumentKey());
-                    if (!instrumentResult.IsSuccessStatusCode)
-                    {
-                        // TODO: replace with warning
-                        output.Error(instrumentResult.Content);
-                        return;
-                    }
-
-                    context.AddOpenOrder(order, instrumentResult.Data);
+                    output.Error(ordersResult.Content);
+                    return;
                 }
+
+                foreach (var order in ordersResult.Data.Results)
+                {
+                    // TODO: better filter out orders (by account, include pending, etc)
+
+                    if (order.State == "confirmed" ||
+                        order.State == "queued")
+                    {
+                        var instrumentResult = await client.Instrument(order.GetInstrumentKey());
+                        if (!instrumentResult.IsSuccessStatusCode)
+                        {
+                            // TODO: replace with warning
+                            output.Error(instrumentResult.Content);
+                            return;
+                        }
+
+                        context.AddOpenOrder(order, instrumentResult.Data);
+                    }
+                }
+
+                ordersResult = await client.NextOrders(ordersResult.Data);
             }
 
             output.OpenOrders(context.OpenOrders);
