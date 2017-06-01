@@ -1,0 +1,63 @@
+version: 1.0.{build}
+image: Visual Studio 2017
+configuration: Release
+clone_script:
+- cmd: >-
+    git clone -q --recursive --branch=%APPVEYOR_REPO_BRANCH% https://github.com/%APPVEYOR_REPO_NAME%.git %APPVEYOR_BUILD_FOLDER%
+
+    git checkout -qf %APPVEYOR_REPO_COMMIT%
+before_build:
+- cmd: dotnet restore
+build:
+  project: RobinhoodCli.sln
+  parallel: true
+  verbosity: normal
+before_package:
+- cmd: >-
+    dotnet publish src/RobinhoodCli/RobinhoodCli.csproj -c Release -r any
+
+    dotnet publish src/RobinhoodCli/RobinhoodCli.csproj -c Release -r win7-x86
+
+    dotnet publish src/RobinhoodCli/RobinhoodCli.csproj -c Release -r win7-x64
+
+    dotnet publish src/RobinhoodCli/RobinhoodCli.csproj -c Release -r ubuntu.14.04-x64
+
+    dotnet publish src/RobinhoodCli/RobinhoodCli.csproj -c Release -r osx.10.10-x64
+after_build:
+- cmd: >-
+    7z a robinhood-cli-any-%APPVEYOR_BUILD_VERSION%.zip %APPVEYOR_BUILD_FOLDER%\src\RobinhoodCli\bin\Release\netcoreapp1.1\any\publish\*.*
+
+    7z a robinhood-cli-win7-x86-%APPVEYOR_BUILD_VERSION%.zip %APPVEYOR_BUILD_FOLDER%\src\RobinhoodCli\bin\Release\netcoreapp1.1\win7-x86\publish\*.*
+
+    7z a robinhood-cli-win7-x64-%APPVEYOR_BUILD_VERSION%.zip %APPVEYOR_BUILD_FOLDER%\src\RobinhoodCli\bin\Release\netcoreapp1.1\win7-x64\publish\*.*
+
+    7z a robinhood-cli-ubuntu.14.04-x64-%APPVEYOR_BUILD_VERSION%.zip %APPVEYOR_BUILD_FOLDER%\src\RobinhoodCli\bin\Release\netcoreapp1.1\ubuntu.14.04-x64\publish\*.*
+
+    7z a robinhood-cli-osx.10.10-x64-%APPVEYOR_BUILD_VERSION%.zip %APPVEYOR_BUILD_FOLDER%\src\RobinhoodCli\bin\Release\netcoreapp1.1\osx.10.10-x64\publish\*.*
+test_script:
+- cmd: >-
+    cd test/RobinhoodCli.Tests/
+
+    dotnet test
+artifacts:
+- path: robinhood-cli-any-*.zip
+  name: robinhood-cli-any
+- path: robinhood-cli-win7-x86-*.zip
+  name: robinhood-cli-win7-x86
+- path: robinhood-cli-win7-x64-*.zip
+  name: robinhood-cli-win7-x64
+- path: robinhood-cli-ubuntu.14.04-x64-*.zip
+  name: robinhood-cli-ubuntu.14.04-x64
+- path: robinhood-cli-osx.10.10-x64-*.zip
+  name: robinhood-cli-osx.10.10-x64
+deploy:
+- provider: BinTray
+  username: adriangodong
+  api_key:
+    secure: x4aqbhvqFKyyFbAKlOOky/40HWARbAf3seI1wpZFJ0eCvyjaKN+UnU+DqQDpFcOB
+  subject: adriangodong
+  repo: robinhood-cli
+  package: robinhood-cli-any
+  publish: true
+  on:
+    branch: master
