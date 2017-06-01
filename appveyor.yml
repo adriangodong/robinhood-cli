@@ -25,15 +25,15 @@ before_package:
     dotnet publish src/RobinhoodCli/RobinhoodCli.csproj -c Release -r osx.10.10-x64
 after_build:
 - cmd: >-
-    7z a robinhood-cli-any-%APPVEYOR_BUILD_VERSION%.zip %APPVEYOR_BUILD_FOLDER%\src\RobinhoodCli\bin\Release\netcoreapp1.1\any\publish\
+    7z a robinhood-cli-any-%APPVEYOR_BUILD_VERSION%.zip %APPVEYOR_BUILD_FOLDER%\src\RobinhoodCli\bin\Release\netcoreapp1.1\any\publish\*
 
-    7z a robinhood-cli-win7-x86-%APPVEYOR_BUILD_VERSION%.zip %APPVEYOR_BUILD_FOLDER%\src\RobinhoodCli\bin\Release\netcoreapp1.1\win7-x86\publish\
+    7z a robinhood-cli-win7-x86-%APPVEYOR_BUILD_VERSION%.zip %APPVEYOR_BUILD_FOLDER%\src\RobinhoodCli\bin\Release\netcoreapp1.1\win7-x86\publish\*
 
-    7z a robinhood-cli-win7-x64-%APPVEYOR_BUILD_VERSION%.zip %APPVEYOR_BUILD_FOLDER%\src\RobinhoodCli\bin\Release\netcoreapp1.1\win7-x64\publish\
+    7z a robinhood-cli-win7-x64-%APPVEYOR_BUILD_VERSION%.zip %APPVEYOR_BUILD_FOLDER%\src\RobinhoodCli\bin\Release\netcoreapp1.1\win7-x64\publish\*
 
-    7z a robinhood-cli-ubuntu.14.04-x64-%APPVEYOR_BUILD_VERSION%.zip %APPVEYOR_BUILD_FOLDER%\src\RobinhoodCli\bin\Release\netcoreapp1.1\ubuntu.14.04-x64\publish\
+    7z a robinhood-cli-ubuntu.14.04-x64-%APPVEYOR_BUILD_VERSION%.zip %APPVEYOR_BUILD_FOLDER%\src\RobinhoodCli\bin\Release\netcoreapp1.1\ubuntu.14.04-x64\publish\*
 
-    7z a robinhood-cli-osx.10.10-x64-%APPVEYOR_BUILD_VERSION%.zip %APPVEYOR_BUILD_FOLDER%\src\RobinhoodCli\bin\Release\netcoreapp1.1\osx.10.10-x64\publish\
+    7z a robinhood-cli-osx.10.10-x64-%APPVEYOR_BUILD_VERSION%.zip %APPVEYOR_BUILD_FOLDER%\src\RobinhoodCli\bin\Release\netcoreapp1.1\osx.10.10-x64\publish\*
 test_script:
 - cmd: >-
     cd test/RobinhoodCli.Tests/
