@@ -58,6 +58,7 @@ deploy:
   subject: adriangodong
   repo: robinhood-cli
   package: robinhood-cli-any
+  artifact: robinhood-cli-any
   publish: true
   on:
     branch: master
