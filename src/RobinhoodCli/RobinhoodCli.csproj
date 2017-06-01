@@ -3,6 +3,7 @@
   <PropertyGroup>
     <TargetFramework>netcoreapp1.1</TargetFramework>
     <OutputType>Exe</OutputType>
+    <RuntimeIdentifiers>any;win7-x86;win7-x64;ubuntu.14.04-x64;osx.10.10-x64</RuntimeIdentifiers>
   </PropertyGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\lib\Deadlock.Robinhood\Deadlock.Robinhood\Deadlock.Robinhood.csproj" />
